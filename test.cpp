@@ -7,10 +7,53 @@
 //
 
 #include <iostream>
-#include "model.hpp"
-#include "cutest.h"
 #include <cmath>
 #include <string>
+
+// google test
+#include "gtest/gtest.h"
+
+//
+#include "model.hpp"
+#include "runner.hpp"
+
+
+//using namespace test;
+
+class SFORTest : public ::testing::Test
+{
+protected:
+  Model *model;
+  dvector parameters = {1e7, 50e6, 0.5};
+
+  virtual void SetUp()
+  {
+    model = new SFOR(parameters);
+  }
+
+  virtual void TearDown()
+  {
+    delete model;
+  }
+};
+
+class C2SMTest : public ::testing::Test
+{
+protected:
+  Model *model;
+
+  virtual void SetUp()
+  {
+    model = new C2SM;
+  }
+
+  virtual void TearDown()
+  {
+    delete model;
+  }
+};
+
+
 
 // prototypes
 double rate_sfor(const dvector &p, const double T, const double y);
@@ -37,75 +80,40 @@ double arrhenius(const double A, const double E, const double T)
     return A * exp(-E/ Rgas /T);
 }
 
-void test_init_model()
+
+TEST_F(SFORTest, getNParameters)
 {
-    dvector p = {1e7, 50e6, 0.5};
-    SFOR model(p);
-    double T = 1000;
-    TEST_CHECK_(model.getNParameters() == 3, "Test number of parameters");
-    //double rate = p[0] * exp(-p[1]/Rgas/T) * p[2];
-    
-    double rate = rate_sfor(p, T, 0);
-    
-    dvector y = {0, T};
-    dvector dydt(2);
-    
-    model.calcRate(y, dydt, 0);
-    TEST_CHECK_(dydt[0] == rate , "Test rate");
+  EXPECT_EQ(3, model->getNParameters());
 }
 
-void test_model_select()
+TEST_F(SFORTest, getParameters)
 {
-    dvector parameters = {1e7, 50e6, 0.5};
-    Model *model = new SFOR(parameters);
-    
-    double T = 1000;
-    double yv = 0.05;
-    
-    double rate = rate_sfor(parameters, T, yv);
-    
-    dvector y = {yv, T};
-    dvector dydt(2);
-    
-    model->calcRate(y, dydt, 0);
-    TEST_CHECK_(dydt[0] == rate , "Test rate");
-    delete model;
+  EXPECT_EQ(parameters, model->getParameters());
 }
 
-void test_c2sm()
+TEST_F(SFORTest, rate)
 {
-    C2SM model;
-    const dvector par = model.getParameters();
-    const dvector y = {0, 1, 1000};
-    dvector dydt(3);
-    double T = y[2];
-    double s = y[1];
-    double rate = rate_c2sm(par, T, s);
-    model.calcRate(y, dydt, 0);
-    TEST_CHECK_(dydt[0] == rate , "Test rate");
+  double T = 1000;
+  double v = 0.0;
+  dvector y = {v, T};
+  dvector dydt(2);
+  model->calcRate(y, dydt, 0.0);
+  EXPECT_EQ(dydt[0], rate_sfor(parameters, T, v));
 }
 
-void test_parametersDefault()
+TEST_F(C2SMTest, rate)
 {
-  Model *model = new SFOR();
-  TEST_CHECK_(model->getParameters() == model->getParametersDefault(), "Test par default");
-  delete model;
+  double T = 1000;
+  double v = 0.0;
+  double s = 1.0;
+  dvector y = {v, s, T};
+  dvector dydt(3);
+  model->calcRate(y, dydt, 0.0);
+  EXPECT_EQ(dydt[0], rate_c2sm(model->getParameters(), T, s));
 }
 
-void test_name()
+int main(int argc, char **argv)
 {
-  Model *model = new SFOR();
-  //std::cout << model->getName() << std::endl;
-  TEST_CHECK_(model->getName() == "SFOR", "Test name");
-  delete model;
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
-
-TEST_LIST = {
-    { "init", test_init_model },
-    { "model_select", test_model_select },
-    {"parameters default", test_parametersDefault},
-    {"c2sm", test_c2sm},
-    {"name", test_name},
-    { 0 }
-};
-
