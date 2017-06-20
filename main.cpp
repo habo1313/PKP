@@ -75,9 +75,13 @@
 
 int main()
 {
-  dvector parameters = {1e6, 60e6, 0.1};
+  //dvector parameters = {1e6, 60e6, 0.1};
   std::cout << "Main " << std::endl;
-  Runner run(0, parameters);
+  //Runner run(0, parameters);
+  Runner run(0);
+  //std::cout << "Parameters = " << run.getParameters()[0] << std::endl;
+
+  
 
   dvector y = {0, 1000};
   double tend = 0.02;

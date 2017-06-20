@@ -53,11 +53,30 @@ public:
     // 	//model = std::make_unique<SFOR>(parameters);
     //   }
   }
+  Runner(int modelType)
+    {
+    std::cout << "ctor Runner=" << modelType << std::endl;
+    if (modelType == 0)
+      {
+	std::cout << "SFOR" << std::endl;
+	model = new SFOR;
+      }
+    else if (modelType == 1)
+      {
+	std::cout << "C2SM" << std::endl;
+	model = new C2SM;
+      }
+    else
+      {
+	throw 1;
+      }
+    }
   ~Runner()
   {//delete model;
     delete model;
   }
   void solve(dvector y0, double t0, double tEnd, double dt);
+  dvector const getParameters(){return model->getParameters();}
 };
 
 #endif /* runner_hpp */
