@@ -25,15 +25,12 @@ public:
   //enum models {sfor, c2sm};
   Runner(int modelType, dvector parameters)
   {
-    std::cout << "ctor Runner=" << modelType << std::endl;
     if (modelType == 0)
       {
-	std::cout << "SFOR" << std::endl;
 	model = new SFOR(parameters);
       }
     else if (modelType == 1)
       {
-	std::cout << "C2SM" << std::endl;
 	model = new C2SM(parameters);
       }
     else
@@ -55,15 +52,12 @@ public:
   }
   Runner(int modelType)
     {
-    std::cout << "ctor Runner=" << modelType << std::endl;
     if (modelType == 0)
       {
-	std::cout << "SFOR" << std::endl;
 	model = new SFOR;
       }
     else if (modelType == 1)
       {
-	std::cout << "C2SM" << std::endl;
 	model = new C2SM;
       }
     else

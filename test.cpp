@@ -53,8 +53,6 @@ protected:
   }
 };
 
-
-
 // prototypes
 double rate_sfor(const dvector &p, const double T, const double y);
 double arrhenius(const double A, const double E, const double T);
@@ -111,6 +109,29 @@ TEST_F(C2SMTest, rate)
   model->calcRate(y, dydt, 0.0);
   EXPECT_EQ(dydt[0], rate_c2sm(model->getParameters(), T, s));
 }
+
+class RunnerTest : public ::testing::Test
+{
+protected:
+  Runner *runner;
+  dvector parameters = {1e7, 50e6, 0.5};
+
+  virtual void SetUp()
+  {
+    runner = new Runner(0, parameters);
+  }
+
+  virtual void TearDown()
+  {
+    delete runner;
+  }
+};
+
+TEST_F(RunnerTest, parameters)
+{
+  EXPECT_EQ(parameters, runner->getParameters());
+}
+
 
 int main(int argc, char **argv)
 {
