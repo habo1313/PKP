@@ -10,7 +10,7 @@
 #include <cmath>
 
 
-void SFOR::calcRate(const double t, const dvector &y, dvector &dydt)
+void SFOR::calcRate(const dvector &y, dvector &dydt, double t)
 {
     double vol = y[0];
     double T = y[1];
@@ -19,7 +19,7 @@ void SFOR::calcRate(const double t, const dvector &y, dvector &dydt)
     dydt[1] = 0.0;
 }
 
-void C2SM::calcRate(const double t, const dvector &y, dvector &dydt)
+void C2SM::calcRate(const dvector &y, dvector &dydt, double t)
 {
     const dvector par = getParameters();
     double T = y[2];

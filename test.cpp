@@ -50,7 +50,7 @@ void test_init_model()
     dvector y = {0, T};
     dvector dydt(2);
     
-    model.calcRate(0, y, dydt);
+    model.calcRate(y, dydt, 0);
     TEST_CHECK_(dydt[0] == rate , "Test rate");
 }
 
@@ -67,7 +67,7 @@ void test_model_select()
     dvector y = {yv, T};
     dvector dydt(2);
     
-    model->calcRate(0, y, dydt);
+    model->calcRate(y, dydt, 0);
     TEST_CHECK_(dydt[0] == rate , "Test rate");
     delete model;
 }
@@ -81,7 +81,7 @@ void test_c2sm()
     double T = y[2];
     double s = y[1];
     double rate = rate_c2sm(par, T, s);
-    model.calcRate(0, y, dydt);
+    model.calcRate(y, dydt, 0);
     TEST_CHECK_(dydt[0] == rate , "Test rate");
 }
 
