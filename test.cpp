@@ -109,12 +109,3 @@ TEST_LIST = {
     { 0 }
 };
 
-
-/*
-int main()
-{
-    dvector p = {1e7, 50e6, 0.5};
-    SFOR model(p);
-    std::cout << model.getNParameters() << std::endl;
-}
-*/
