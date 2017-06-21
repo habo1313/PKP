@@ -118,7 +118,7 @@ protected:
 
   virtual void SetUp()
   {
-    runner = new Runner(0, parameters);
+    runner = new Runner(Runner::sfor, parameters);
   }
 
   virtual void TearDown()

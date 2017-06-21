@@ -31,8 +31,7 @@ void Runner::solve(dvector y0, double t0, double tEnd, double dt)
   push_back_state_and_time solution(x, t);
 
   // integrate
-  boost::numeric::odeint::integrate(fct,
-  				    y0 , t0 , tEnd,  dt, solution);
+  boost::numeric::odeint::integrate(fct, y0 , t0 , tEnd,  dt, solution);
 
   // store solutions
   states = solution.m_states;

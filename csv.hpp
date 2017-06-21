@@ -16,7 +16,7 @@ class csvfile
     const std::string separator_;
 public:
     csvfile(const std::string filename, const std::string separator = ",")
-        : Fs_()
+        : fs_()
         , separator_(separator)
     {
         fs_.exceptions(std::ios::failbit | std::ios::badbit);

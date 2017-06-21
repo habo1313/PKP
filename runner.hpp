@@ -39,48 +39,31 @@ protected:
   std::vector<dvector> states;
   //std::unique_ptr<Model> model;
 public:
-  //enum models {sfor, c2sm};
-  Runner(int modelType, dvector parameters)
+  enum models {sfor, c2sm};
+  Runner(models modelType, dvector parameters)
   {
-    if (modelType == 0)
+    switch (modelType)
       {
-	model = new SFOR(parameters);
+      case sfor:
+	model = new SFOR(parameters); break;
+      case c2sm:
+	model = new C2SM(parameters); break;
       }
-    else if (modelType == 1)
-      {
-	model = new C2SM(parameters);
-      }
-    else
-      {
-	throw 1;
-      }
-    // switch (modelType)
-    //   {
-    //   case(0):
-    // 	  std::cout << "SFOR" << std::endl;
-    // 	  model = new SFOR(parameters);
-    // 	//model = std::make_unique<SFOR>(parameters);
-    //   case(1):
-    // 	  std::cout << "C2SM" << std::endl;
-    // 	  model = new C2SM(parameters);
-    // 	//model = std::make_unique<SFOR>(parameters);
-    //   }
+    //throw 0;
   }
-  Runner(int modelType)
-    {
-    if (modelType == 0)
+  Runner(models modelType)
+  {
+    switch (modelType)
       {
-	model = new SFOR;
+      case sfor:
+	model = new SFOR(); break;
+      case c2sm:
+	model = new C2SM(); break;
       }
-    else if (modelType == 1)
-      {
-	model = new C2SM;
-      }
-    else
-      {
-	throw 1;
-      }
-    }
+    //throw 0;
+  }
+    
+
   ~Runner(){delete model;}
   void solve(dvector y0, double t0, double tEnd, double dt);
   dvector const getParameters(){return model->getParameters();}

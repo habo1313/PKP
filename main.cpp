@@ -27,7 +27,8 @@ int main()
   std::cout << "program" << std::endl;
 
   // set runner with SFOR=0
-  Runner run(0);
+  std::cout << "Init Runner" << std::endl;
+  Runner run(Runner::sfor);
 
   // define parameters
   dvector y = {0, 1000};
@@ -36,6 +37,7 @@ int main()
   double dt = 1e-6;
 
   // solve
+  std::cout << "Solve" << std::endl;
   run.solve(y, t0, tend, dt);
 
   // get solutions

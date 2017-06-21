@@ -62,9 +62,7 @@ public:
 class C2SM: public Model
 {
 public:
-  C2SM(const dvector &par): Model(par, c2smParDefault, "C2SM"){
-    //name = "C2SM";
-  };
+  C2SM(const dvector &par): Model(par, c2smParDefault, "C2SM"){};
   C2SM(): Model(c2smParDefault, c2smParDefault, "C2SM"){};
   ~C2SM(){};
   void calcRate(const dvector &y, dvector &dydt, double t);
