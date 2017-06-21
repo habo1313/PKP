@@ -12,6 +12,7 @@
 //#include <memory>
 #include "model.hpp"
 #include <iostream>
+#include <string>
 
 void printv(const dvector &y, const double t);
 
@@ -85,6 +86,7 @@ public:
   dvector const getParameters(){return model->getParameters();}
   std::vector<double> getTimes(){return times;}
   std::vector<dvector> getStates(){return states;}
+  void dump(const std::string &csv, std::string sep = ",");
 };
 
 

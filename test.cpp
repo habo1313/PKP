@@ -142,8 +142,6 @@ TEST(PushBackTest, pointer)
   std::vector<dvector> state = {{0.0, 0.0}};
   std::vector<double> t = {0.0};
   push_back_state_and_time *push = new push_back_state_and_time(state, t);
-  std::cout << push->m_times.size() << std::endl;
-  std::cout << (*push).m_times.size() << std::endl;
   dvector state1 = {1.0, 1.0};
   double t1 = 1;
   (*push)(state1, t1);
@@ -164,7 +162,7 @@ TEST(PushBackTest, parameters)
   dvector state1 = {1.0, 1.0};
   push(state1, t1);
   EXPECT_EQ(push.m_states[1], state1);
-  EXPECT_EQ(push.m_times[0], t1);
+  EXPECT_EQ(push.m_times[1], t1);
   //std::cout << "state[0]=" << push->m_states[0][0] << std::endl;
 
   //delete push;
