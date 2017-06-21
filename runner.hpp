@@ -15,12 +15,28 @@
 
 void printv(const dvector &y, const double t);
 
+struct push_back_state_and_time
+{
+    std::vector< dvector >& m_states;
+    std::vector< double >& m_times;
+
+    push_back_state_and_time( std::vector< dvector > &states , std::vector< double > &times )
+      : m_states( states ) , m_times( times ) {}
+
+    void operator()( const dvector &x , double t )
+    {
+      m_states.push_back( x );
+      m_times.push_back( t );
+    }
+};
+
 class Runner
 {
 protected:
-    Model * model;
-    
-    //std::unique_ptr<Model> model;
+  Model * model;
+  std::vector<double> times;
+  std::vector<dvector> states;
+  //std::unique_ptr<Model> model;
 public:
   //enum models {sfor, c2sm};
   Runner(int modelType, dvector parameters)
@@ -37,7 +53,6 @@ public:
       {
 	throw 1;
       }
-
     // switch (modelType)
     //   {
     //   case(0):
@@ -65,12 +80,13 @@ public:
 	throw 1;
       }
     }
-  ~Runner()
-  {//delete model;
-    delete model;
-  }
+  ~Runner(){delete model;}
   void solve(dvector y0, double t0, double tEnd, double dt);
   dvector const getParameters(){return model->getParameters();}
+  std::vector<double> getTimes(){return times;}
+  std::vector<dvector> getStates(){return states;}
 };
+
+
 
 #endif /* runner_hpp */
