@@ -1,1 +1,3 @@
 build/
+.stdafx.c++.pch
+compiling_error.txt

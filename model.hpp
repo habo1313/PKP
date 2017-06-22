@@ -17,13 +17,16 @@
 
 // double vector data
 typedef std::vector<double> dvector;
+typedef std::vector<std::string> parVector;
 
 const double Rgas = 8314.33;
 
 // constant parameters
 const dvector sforParDefault = {1e6, 50e6, 0.6};
-const dvector c2smParDefault = {1e6, 50e6, 0.3, 1e8, 100e6, 1.0};
+const parVector sforParNames = {"A", "E", "y0"};
 
+const dvector c2smParDefault = {1e6, 50e6, 0.3, 1e8, 100e6, 1.0};
+const parVector c2smParNames = {"A1", "E1", "y1", "A2", "E2", "y2"};
 
 class Model
 {
@@ -31,10 +34,13 @@ protected:
   dvector parameters;
   const dvector parametersDefault;
   std::string name;
+  parVector parametersNames;
 
 public:
-  Model(const dvector &par, const dvector &parDef, const std::string &model):
-    parameters(par), parametersDefault(parDef), name(model)
+  Model(const dvector &par, const dvector &parDef, const std::string &model,
+  const parVector parNames):
+    parameters(par), parametersDefault(parDef), name(model),
+    parametersNames(parNames)
   {
     if (par.size() != parDef.size())
       throw 0;
@@ -45,17 +51,15 @@ public:
   dvector const getParametersDefault(){return parametersDefault;}
   virtual void calcRate(const dvector &y, dvector &dydt, double t)=0;
   std::string const getName(){return name;}
+  parVector const getParametersNames(){return parametersNames;}
 };
 
 
 class SFOR: public Model
 {
 public:
-  SFOR(const dvector &par): Model(par, sforParDefault, "SFOR"){
-      //std::cout << "Init SFOR " << std::endl;
-      //name = "SFOR";
-  };
-  SFOR(): Model(sforParDefault, sforParDefault, "SFOR"){};
+  SFOR(const dvector &par): Model(par, sforParDefault, "SFOR", sforParNames){}
+  SFOR(): Model(sforParDefault, sforParDefault, "SFOR", sforParNames){};
   ~SFOR(){}
   virtual void calcRate(const dvector &y, dvector &dydt, double t);
 };
@@ -63,8 +67,8 @@ public:
 class C2SM: public Model
 {
 public:
-  C2SM(const dvector &par): Model(par, c2smParDefault, "C2SM"){};
-  C2SM(): Model(c2smParDefault, c2smParDefault, "C2SM"){};
+  C2SM(const dvector &par): Model(par, c2smParDefault, "C2SM", c2smParNames){};
+  C2SM(): Model(c2smParDefault, c2smParDefault, "C2SM", c2smParNames){};
   ~C2SM(){};
   virtual void calcRate(const dvector &y, dvector &dydt, double t);
 };

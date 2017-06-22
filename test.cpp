@@ -82,6 +82,7 @@ double arrhenius(const double A, const double E, const double T)
 TEST_F(SFORTest, getNParameters)
 {
   EXPECT_EQ(3, model->getNParameters());
+  EXPECT_EQ(sforParNames, model->getParametersNames());
 }
 
 TEST_F(SFORTest, getParameters)
@@ -134,7 +135,15 @@ TEST_F(RunnerTest, parameters)
 
 TEST_F(RunnerTest, solve)
 {
-  //
+  dvector y0 = {0.0, 1000};
+  double t0 = 0;
+  double tEnd = 0.05;
+  double dt = 1e-6;
+  runner->solve(y0, t0, tEnd, dt);
+  runner->dump("test.csv");
+  std::vector<double> times = runner->getTimes();
+  std::vector<dvector> states = runner->getStates();
+  EXPECT_EQ(times.size(), states.size());
 }
 
 TEST(PushBackTest, pointer)
@@ -147,7 +156,6 @@ TEST(PushBackTest, pointer)
   (*push)(state1, t1);
   EXPECT_EQ(t1, push->m_times[1]);
   EXPECT_EQ(push->m_states[1], state1);
-  
 }
 
 
@@ -167,6 +175,7 @@ TEST(PushBackTest, parameters)
 
   //delete push;
 }
+
 
 
 

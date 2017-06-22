@@ -57,6 +57,14 @@ int main(int argc, char **argv)
   std::cout << "Init Runner with " << modelName <<" - " << model << std::endl;
   Runner run(Runner::sfor);
 
+  std::cout << "Parameters:";
+  dvector parameters = run.getParameters();
+  for (auto p: parameters)
+  {
+    std::cout << p << "\t";
+  }
+  std::cout << std::endl;
+
   // define parameters
   dvector y = {0, 1000};
   double tend = 0.02;
