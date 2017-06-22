@@ -43,9 +43,14 @@ void Runner::solve(double t, double dt)
   times = solution.m_times;
 }
 
-void Runner::dydt(const dvector y, dvector dydt, double t)
+void Runner::dydt(const dvector &y, dvector &dydt, double t)
 {
-    model->calcRate(y, dydt, t);
+    size_t n = dydt.size();
+    //double T = dydt.back();
+    //double T = y[n-1];
+    double T = y.back();
+    model->calcRate(y, dydt, t, T);
+    dydt[n-1] = 0.0; // const temperature
 }
 
 

@@ -53,7 +53,7 @@ public:
   size_t getNParameters(){return parametersDefault.size();}
   dvector const getParameters(){return parameters;}
   dvector const getParametersDefault(){return parametersDefault;}
-  virtual void calcRate(const dvector &y, dvector &dydt, double t)=0;
+  virtual void calcRate(const dvector &y, dvector &dydt, double t, double T)=0;
   std::string const getName(){return name;}
   parVector const getParametersNames(){return parametersNames;}
   void const printParameters();
@@ -71,7 +71,7 @@ public:
   SFOR(): Model(sforParDefault, sforParDefault, "SFOR", sforParNames,
     sforInitState){};
   ~SFOR(){}
-  virtual void calcRate(const dvector &y, dvector &dydt, double t);
+  virtual void calcRate(const dvector &y, dvector &dydt, double t, double T);
 };
 
 //
@@ -85,7 +85,7 @@ public:
   C2SM(): Model(c2smParDefault, c2smParDefault, "C2SM", c2smParNames,
     c2smInitState){};
   ~C2SM(){};
-  virtual void calcRate(const dvector &y, dvector &dydt, double t);
+  virtual void calcRate(const dvector &y, dvector &dydt, double t, double T);
 };
 
 

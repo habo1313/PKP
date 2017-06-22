@@ -13,9 +13,10 @@
 // google test
 #include "gtest/gtest.h"
 
-//
 #include "model.hpp"
 #include "runner.hpp"
+
+//#define private public
 
 
 //using namespace test;
@@ -96,7 +97,7 @@ TEST_F(SFORTest, rate)
   double v = 0.0;
   dvector y = {v, T};
   dvector dydt(2);
-  model->calcRate(y, dydt, 0.0);
+  model->calcRate(y, dydt, 0.0, T);
   EXPECT_EQ(dydt[0], rate_sfor(parameters, T, v));
 }
 
@@ -107,7 +108,7 @@ TEST_F(C2SMTest, rate)
   double s = 1.0;
   dvector y = {v, s, T};
   dvector dydt(3);
-  model->calcRate(y, dydt, 0.0);
+  model->calcRate(y, dydt, 0.0, T);
   EXPECT_EQ(dydt[0], rate_c2sm(model->getParameters(), T, s));
 }
 
@@ -133,6 +134,7 @@ TEST_F(RunnerTest, parameters)
   EXPECT_EQ(parameters, runner->getParameters());
 }
 
+
 TEST_F(RunnerTest, solve)
 {
   //dvector y0 = {0.0, 1000};
@@ -145,6 +147,26 @@ TEST_F(RunnerTest, solve)
   std::vector<dvector> states = runner->getStates();
   EXPECT_EQ(times.size(), states.size());
   EXPECT_EQ(states[0].size(), sforInitState.size()+1);
+}
+
+TEST(RunnerTest2, dydt)
+{
+    Runner runner(Runner::sfor);
+    dvector parameters = runner.getParameters();
+    double T = 1000;
+    dvector y = {0.0, T};
+    dvector dydt(y.size());
+    double rate = rate_sfor(parameters, T, 0);
+
+    // check model rate
+    double t=0;
+    runner.model->calcRate(y, dydt, t, T);
+    EXPECT_EQ(rate, dydt[0]);
+
+    //std::cout << "calc dydt" << '\n';
+    runner.dydt(y, dydt, t);
+    std::cout << "calc dydt...ok" << '\n';
+    EXPECT_EQ(rate, dydt[0]);
 }
 
 TEST(PushBackTest, pointer)

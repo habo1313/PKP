@@ -14,6 +14,9 @@
 #include <iostream>
 #include <string>
 
+// include gtest for testing purpose
+#include "gtest/gtest_prod.h"
+
 void printv(const dvector &y, const double t);
 
 struct push_back_state_and_time
@@ -37,7 +40,12 @@ protected:
   Model * model;
   std::vector<double> times;
   std::vector<dvector> states;
-  void dydt(const dvector y, dvector dydt, double t);
+  //
+  //    calculate the derivative
+  //
+  void dydt(const dvector &y, dvector &dydt, double t);
+
+  FRIEND_TEST(RunnerTest2, dydt);
   //std::unique_ptr<Model> model;
 public:
   enum models {sfor, c2sm};
