@@ -135,15 +135,16 @@ TEST_F(RunnerTest, parameters)
 
 TEST_F(RunnerTest, solve)
 {
-  dvector y0 = {0.0, 1000};
-  double t0 = 0;
+  //dvector y0 = {0.0, 1000};
+  //double t0 = 0;
   double tEnd = 0.05;
   double dt = 1e-6;
-  runner->solve(y0, t0, tEnd, dt);
+  runner->solve(tEnd, dt);
   runner->dump("test.csv");
   std::vector<double> times = runner->getTimes();
   std::vector<dvector> states = runner->getStates();
   EXPECT_EQ(times.size(), states.size());
+  EXPECT_EQ(states[0].size(), sforInitState.size()+1);
 }
 
 TEST(PushBackTest, pointer)

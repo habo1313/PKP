@@ -15,27 +15,37 @@ void printv(const dvector &y, const double t)
 }
 
 
-void Runner::solve(dvector y0, double t0, double tEnd, double dt)
+void Runner::solve(double t, double dt)
 {
   //
+  double T = 1000;
+  dvector y0 = model->getInitState();
+  y0.push_back(T);
   dvector dydt(y0.size());
 
   // define integral function from model
-  auto fct = std::bind(&Model::calcRate, model, pl::_1 , pl::_2 , pl::_3);
-  double tstart = 0.0;
+  //auto fct = std::bind(&Model::calcRate, model, pl::_1 , pl::_2 , pl::_3);
+  auto fct = std::bind(&Runner::dydt, this, pl::_1 , pl::_2 , pl::_3);
 
-  std::vector<double> t = {t0};
-  std::vector<dvector> x = {y0};
+  double t0 = 0.0;
+
+  std::vector<double> ts = {t0};
+  std::vector<dvector> xs = {y0};
 
   // initialize push structure
-  push_back_state_and_time solution(x, t);
+  push_back_state_and_time solution(xs, ts);
 
   // integrate
-  boost::numeric::odeint::integrate(fct, y0 , t0 , tEnd,  dt, solution);
+  boost::numeric::odeint::integrate(fct, y0 , t0 , t,  dt, solution);
 
   // store solutions
   states = solution.m_states;
   times = solution.m_times;
+}
+
+void Runner::dydt(const dvector y, dvector dydt, double t)
+{
+    model->calcRate(y, dydt, t);
 }
 
 

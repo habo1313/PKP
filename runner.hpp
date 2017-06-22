@@ -37,6 +37,7 @@ protected:
   Model * model;
   std::vector<double> times;
   std::vector<dvector> states;
+  void dydt(const dvector y, dvector dydt, double t);
   //std::unique_ptr<Model> model;
 public:
   enum models {sfor, c2sm};
@@ -63,7 +64,7 @@ public:
     //throw 0;
   }
   ~Runner(){delete model;}
-  void solve(dvector y0, double t0, double tEnd, double dt);
+  void solve(double t, double dt=1e-4);
   dvector const getParameters(){return model->getParameters();}
   std::vector<double> getTimes(){return times;}
   std::vector<dvector> getStates(){return states;}

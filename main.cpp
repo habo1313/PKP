@@ -67,14 +67,14 @@ int main(int argc, char **argv)
   run.printParameters();
 
   // define parameters
-  dvector y = {0, 1000};
+  //dvector y = {0, 1000};
   double tend = 0.02;
-  double t0 = 0.0;
+  //double t0 = 0.0;
   double dt = 1e-6;
 
   // solve
   std::cout << "Solve" << std::endl;
-  run.solve(y, t0, tend, dt);
+  run.solve(tend, dt);
 
   // get solutions
   std::vector<double> times = run.getTimes();
