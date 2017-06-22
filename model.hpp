@@ -31,14 +31,15 @@ protected:
   dvector parameters;
   const dvector parametersDefault;
   std::string name;
-    
+
 public:
-  Model(const dvector &par, const dvector &parDef, const std::string &model): parameters(par), parametersDefault(parDef), name(model)
+  Model(const dvector &par, const dvector &parDef, const std::string &model):
+    parameters(par), parametersDefault(parDef), name(model)
   {
     if (par.size() != parDef.size())
       throw 0;
   }
-  virtual~Model(){}
+  virtual ~Model(){}
   size_t getNParameters(){return parametersDefault.size();}
   dvector const getParameters(){return parameters;}
   dvector const getParametersDefault(){return parametersDefault;}
@@ -55,8 +56,8 @@ public:
       //name = "SFOR";
   };
   SFOR(): Model(sforParDefault, sforParDefault, "SFOR"){};
-  ~SFOR(){};
-  void calcRate(const dvector &y, dvector &dydt, double t);
+  ~SFOR(){}
+  virtual void calcRate(const dvector &y, dvector &dydt, double t);
 };
 
 class C2SM: public Model
@@ -65,7 +66,7 @@ public:
   C2SM(const dvector &par): Model(par, c2smParDefault, "C2SM"){};
   C2SM(): Model(c2smParDefault, c2smParDefault, "C2SM"){};
   ~C2SM(){};
-  void calcRate(const dvector &y, dvector &dydt, double t);
+  virtual void calcRate(const dvector &y, dvector &dydt, double t);
 };
 
 

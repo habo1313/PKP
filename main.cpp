@@ -18,16 +18,43 @@
 
 // #include "model.hpp"
 #include "runner.hpp"
+#include <string.h>
 
 
-int main()
+int main(int argc, char **argv)
 {
   //dvector parameters = {1e6, 60e6, 0.1};
-  std::cout << "Main " << std::endl;
-  std::cout << "program" << std::endl;
+  std::cout << "Main program" << std::endl;
+
+  Runner::models model;
+  std::string modelName;
+  std::cout << "argc=" << std::endl;
+  if (argc==1)
+    {
+      model = Runner::sfor;
+      modelName = "sfor";
+    }
+  else{
+    if(strcmp(argv[1],"sfor"))
+      {
+	model = Runner::sfor;
+	modelName = argv[1];
+      }
+    else if(strcmp(argv[1],"c2sm"))
+      {
+	model = Runner::c2sm;
+	modelName = argv[1];
+      }
+    else
+    {
+      std::cout << "Model " << argv[1] << " not defined" << std::endl;
+      return -1;
+    }
+  }
+
 
   // set runner with SFOR=0
-  std::cout << "Init Runner" << std::endl;
+  std::cout << "Init Runner with " << modelName <<" - " << model << std::endl;
   Runner run(Runner::sfor);
 
   // define parameters
@@ -43,13 +70,8 @@ int main()
   // get solutions
   std::vector<double> times = run.getTimes();
   std::vector<dvector> states = run.getStates();
-  
-  // print solutions
-  // for (int i=0; i < times.size(); ++i)
-  //   {
-  //     //std::cout << times[i] << " " << states[i][0] << std::endl;
-  //   }
+
   run.dump("solution.csv");
-						      
+
   return 0;
 }

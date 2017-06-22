@@ -53,11 +53,9 @@ void Runner::dump(const std::string &csv, std::string sep)
   csvfile file(csv);
   file << "time" ;
   char buffer[2];
-  std::cout << states[0].size() << std::endl;
   for (int j=0; j< states[0].size()-1; ++j)
     {
       std::sprintf (buffer, "y%d", j);
-      //file << buffer;
       file << std::string(buffer);
     }
   file << "Temperature" << endrow;
