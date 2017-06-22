@@ -72,7 +72,7 @@ public:
     //throw 0;
   }
   ~Runner(){delete model;}
-  void solve(double t, double dt=1e-4);
+  void solve(double t, double dt=1e-4, bool verbose=false);
   dvector const getParameters(){return model->getParameters();}
   std::vector<double> getTimes(){return times;}
   std::vector<dvector> getStates(){return states;}

@@ -9,13 +9,18 @@
 
 namespace pl = std::placeholders;
 
+using namespace boost::numeric::odeint;
+
+typedef runge_kutta_cash_karp54< dvector > error_stepper_type;
+typedef controlled_runge_kutta< error_stepper_type > controlled_stepper_type;
+
 void printv(const dvector &y, const double t)
 {
   std::cout << "t=" << t << " y=" << y[0] << std::endl;
 }
 
 
-void Runner::solve(double t, double dt)
+void Runner::solve(double t, double dt, bool verbose)
 {
   //
   double T = 1000;
@@ -29,18 +34,34 @@ void Runner::solve(double t, double dt)
 
   double t0 = 0.0;
 
-  std::vector<double> ts = {t0};
-  std::vector<dvector> xs = {y0};
+  //std::vector<double> ts = {t0};
+  //std::vector<dvector> xs = {y0};
 
   // initialize push structure
-  push_back_state_and_time solution(xs, ts);
+  //push_back_state_and_time solution(xs, ts);
 
   // integrate
-  boost::numeric::odeint::integrate(fct, y0 , t0 , t,  dt, solution);
+  //boost::numeric::odeint::integrate(fct, y0 , t0 , t,  dt, solution);
 
+  dvector tsaved;
+  std::vector<dvector> ysaved;
+
+  double last=1;
+  controlled_stepper_type stepper = make_controlled< error_stepper_type >(
+      1.0e-10 , 1.0e-6 );
+    std::for_each(
+        make_adaptive_time_iterator_begin(stepper, fct, y0, 0.0, 0.1, 1e-3),
+        make_adaptive_time_iterator_end(stepper, fct, y0),
+        [&tsaved, &ysaved, verbose]( std::pair< const dvector & , const double & > x )
+        {
+            if (verbose)
+                std::cout << x.second << " " << x.first[0] << " " << x.first[1]  << "\n";
+            tsaved.push_back(x.second);
+            ysaved.push_back(x.first);
+        });
   // store solutions
-  states = solution.m_states;
-  times = solution.m_times;
+  states = ysaved;
+  times = tsaved;
 }
 
 void Runner::dydt(const dvector &y, dvector &dydt, double t)
