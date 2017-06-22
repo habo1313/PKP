@@ -62,14 +62,13 @@ public:
       }
     //throw 0;
   }
-    
-
   ~Runner(){delete model;}
   void solve(dvector y0, double t0, double tEnd, double dt);
   dvector const getParameters(){return model->getParameters();}
   std::vector<double> getTimes(){return times;}
   std::vector<dvector> getStates(){return states;}
   void dump(const std::string &csv, std::string sep = ",");
+  void printParameters(){model->printParameters();}
 };
 
 

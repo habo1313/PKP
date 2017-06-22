@@ -28,22 +28,22 @@ int main(int argc, char **argv)
 
   Runner::models model;
   std::string modelName;
-  std::cout << "argc=" << std::endl;
+
   if (argc==1)
     {
       model = Runner::sfor;
       modelName = "sfor";
     }
   else{
-    if(strcmp(argv[1],"sfor"))
+    if(strcmp(argv[1],"sfor")==0)
       {
-	model = Runner::sfor;
-	modelName = argv[1];
+	       model = Runner::sfor;
+	       modelName = argv[1];
       }
-    else if(strcmp(argv[1],"c2sm"))
+    else if(strcmp(argv[1],"c2sm")==0)
       {
-	model = Runner::c2sm;
-	modelName = argv[1];
+	       model = Runner::c2sm;
+	       modelName = argv[1];
       }
     else
     {
@@ -55,15 +55,16 @@ int main(int argc, char **argv)
 
   // set runner with SFOR=0
   std::cout << "Init Runner with " << modelName <<" - " << model << std::endl;
-  Runner run(Runner::sfor);
+  Runner run(model);
 
   std::cout << "Parameters:";
-  dvector parameters = run.getParameters();
-  for (auto p: parameters)
-  {
-    std::cout << p << "\t";
-  }
-  std::cout << std::endl;
+  //dvector parameters = run.getParameters();
+  //for (auto p: parameters)
+  //{
+  //  std::cout << p << "\t";
+  //}
+  //std::cout << std::endl;
+  run.printParameters();
 
   // define parameters
   dvector y = {0, 1000};

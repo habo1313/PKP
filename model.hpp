@@ -52,6 +52,7 @@ public:
   virtual void calcRate(const dvector &y, dvector &dydt, double t)=0;
   std::string const getName(){return name;}
   parVector const getParametersNames(){return parametersNames;}
+  void const printParameters();
 };
 
 

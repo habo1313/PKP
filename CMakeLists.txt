@@ -1,12 +1,19 @@
-cmake_minimum_required (VERSION 2.6)
-include_directories ("/Users/vascella/.local/include")
-link_directories ("/Users/vascella/.local/lib")
+cmake_minimum_required (VERSION 3.7)
+
 project (PKP)
 
-#set ( CMAKE_C_FLAGS "-std=gnu++11")
-add_definitions("-std=gnu++14")
+# include directories
+include_directories ("/Users/vascella/.local/include")
+link_directories ("/Users/vascella/.local/lib")
 
-add_library(pkp SHARED model.cpp runner.cpp)
+
+#set ( CMAKE_C_FLAGS "-std=gnu++11")
+# add_definitions("-std=gnu++14")
+set (CMAKE_CXX_STANDARD 11)
+
+set(SOURCE_FILES model.cpp runner.cpp)
+
+add_library(pkp SHARED ${SOURCE_FILES})
 
 # test
 add_executable(test.x test.cpp)

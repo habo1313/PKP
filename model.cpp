@@ -7,8 +7,16 @@
 //
 
 #include "model.hpp"
+#include <iostream>
 #include <cmath>
 
+void const Model::printParameters()
+{
+  std::cout << "Model:" << name  << '\n';
+  for (size_t i = 0; i < parametersNames.size(); i++) {
+    std::cout << parametersNames[i] << "\t" << parameters[i] <<  '\n';
+  }
+}
 
 void SFOR::calcRate(const dvector &y, dvector &dydt, double t)
 {
@@ -24,12 +32,12 @@ void C2SM::calcRate(const dvector &y, dvector &dydt, double t)
     const dvector par = getParameters();
     double T = y[2];
     //double v = y[0];
-    
+
     // fraction of solid
     double s = y[1];
     double k1 = par[0] * exp(-par[1]/Rgas/T);
     double k2 = par[3] * exp(-par[4]/Rgas/T);
-    
+
     // rates
     dydt[0] = (par[2] * k1 + par[5] * k2) * s;
     dydt[1] = -(k1 + k2) * s;
