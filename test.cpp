@@ -14,7 +14,7 @@
 #include "gtest/gtest.h"
 
 #include "model.hpp"
-#include "runner.hpp"
+#include "reactor.hpp"
 
 //#define private public
 
@@ -165,7 +165,6 @@ TEST(RunnerTest2, dydt)
 
     //std::cout << "calc dydt" << '\n';
     runner.dydt(y, dydt, t);
-    std::cout << "calc dydt...ok" << '\n';
     EXPECT_EQ(rate, dydt[0]);
 }
 

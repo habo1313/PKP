@@ -17,7 +17,7 @@
 
 
 // #include "model.hpp"
-#include "runner.hpp"
+#include "reactor.hpp"
 #include <string.h>
 
 
@@ -51,7 +51,6 @@ int main(int argc, char **argv)
       return -1;
     }
   }
-
 
   // set runner with SFOR=0
   std::cout << "Init Runner with " << modelName <<" - " << model << std::endl;
