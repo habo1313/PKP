@@ -12,6 +12,9 @@
 #include <string>
 #include <boost/numeric/odeint.hpp>
 
+// yaml reader
+#include <yaml-cpp/yaml.h>
+
 
 // #include <functional>
 
@@ -26,31 +29,29 @@ int main(int argc, char **argv)
   //dvector parameters = {1e6, 60e6, 0.1};
   std::cout << "Main program" << std::endl;
 
-  Runner::models model;
-  std::string modelName;
 
-  if (argc==1)
-    {
+  //YAML::Node config = YAML::LoadFile(argv[1]);
+  YAML::Node config = YAML::LoadFile(argv[1]);
+
+  Runner::models model;
+  std::string modelName = config["model"]["type"].as<std::string>();
+  dvector parameters = config["model"]["parameters"].as<dvector>();
+
+
+
+  if(modelName==std::string("SFOR"))
+  {
       model = Runner::sfor;
-      modelName = "sfor";
-    }
-  else{
-    if(strcmp(argv[1],"sfor")==0)
-      {
-	       model = Runner::sfor;
-	       modelName = argv[1];
-      }
-    else if(strcmp(argv[1],"c2sm")==0)
-      {
-	       model = Runner::c2sm;
-	       modelName = argv[1];
-      }
-    else
-    {
+  }
+  else if(modelName==std::string("C2SM"))
+  {
+      model = Runner::c2sm;
+  }
+  else
+  {
       std::cout << "Model " << argv[1] << " not defined" << std::endl;
       return -1;
     }
-  }
 
   // set runner with SFOR=0
   std::cout << "Init Runner with " << modelName <<" - " << model << std::endl;
@@ -67,13 +68,14 @@ int main(int argc, char **argv)
 
   // define parameters
   //dvector y = {0, 1000};
-  double tend = 0.02;
+  double t = config["operating_conditions"]["t"].as<double>();
+  double T = config["operating_conditions"]["T"].as<double>();
   //double t0 = 0.0;
-  double dt = 1e-6;
+  double dt = config["operating_conditions"]["dt"].as<double>();
 
   // solve
   std::cout << "Solve" << std::endl;
-  run.solve(tend, dt);
+  run.solve(t, T, dt, true);
 
   // get solutions
   std::vector<double> times = run.getTimes();

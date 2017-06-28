@@ -21,7 +21,7 @@ target_link_libraries(test.x pkp gtest)
 
 # main
 add_executable(main.x main.cpp)
-target_link_libraries(main.x pkp)
+target_link_libraries(main.x pkp yaml-cpp)
 
 
 #add_executable(test.x gtest.cpp)

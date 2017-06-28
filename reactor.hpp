@@ -40,10 +40,12 @@ protected:
   Model * model;
   std::vector<double> times;
   std::vector<dvector> states;
+  bool isoThermal;
   //
-  //    calculate the derivative
+  //    calculate the derivatives
   //
   void dydt(const dvector &y, dvector &dydt, double t);
+  void dTdt(const dvector &y, dvector &dydt, double t);
 
   FRIEND_TEST(RunnerTest2, dydt);
   //std::unique_ptr<Model> model;
@@ -72,7 +74,9 @@ public:
     //throw 0;
   }
   ~Runner(){delete model;}
-  void solve(double t, double dt=1e-4, bool verbose=false);
+  void solve(double t, double T=1000, double dt=1e-4, bool verbose=false);
+  void solve(std::vector<std::vector<double>> points, double dt=1e-4,
+      bool verbose=false);
   dvector const getParameters(){return model->getParameters();}
   std::vector<double> getTimes(){return times;}
   std::vector<dvector> getStates(){return states;}

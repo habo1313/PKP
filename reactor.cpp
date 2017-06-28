@@ -20,10 +20,11 @@ void printv(const dvector &y, const double t)
 }
 
 
-void Runner::solve(double t, double dt, bool verbose)
+void Runner::solve(double t, double T, double dt, bool verbose)
 {
   //
-  double T = 1000;
+  //double T = 1000;
+  isoThermal = true; // set isotherm to
   dvector y0 = model->getInitState();
   y0.push_back(T);
   dvector dydt(y0.size());
@@ -64,6 +65,11 @@ void Runner::solve(double t, double dt, bool verbose)
   times = tsaved;
 }
 
+void solve(std::vector<std::vector<double>> points, double dt, bool verbose)
+{
+    //
+}
+
 void Runner::dydt(const dvector &y, dvector &dydt, double t)
 {
     size_t n = dydt.size();
@@ -71,7 +77,8 @@ void Runner::dydt(const dvector &y, dvector &dydt, double t)
     //double T = y[n-1];
     double T = y.back();
     model->calcRate(y, dydt, t, T);
-    dydt[n-1] = 0.0; // const temperature
+    //dydt[n-1] = 0.0; // const temperature
+    dTdt(y, dydt, t);
 }
 
 
@@ -105,4 +112,16 @@ void Runner::dump(const std::string &csv, std::string sep)
 	}
       file << endrow;
     }
+}
+
+void Runner::dTdt(const dvector &y, dvector &dydt, double t)
+{
+    //
+    if (isoThermal)
+        dydt[dydt.size()-1] = 0.0;
+    else
+    {
+        //
+    }
+
 }
