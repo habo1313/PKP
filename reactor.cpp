@@ -20,7 +20,7 @@ void printv(const dvector &y, const double t)
 }
 
 
-void Runner::solve(double t, double T, double dt, bool verbose)
+void Reactor::solve(double t, double T, double dt, bool verbose)
 {
   //
   //double T = 1000;
@@ -31,7 +31,7 @@ void Runner::solve(double t, double T, double dt, bool verbose)
 
   // define integral function from model
   //auto fct = std::bind(&Model::calcRate, model, pl::_1 , pl::_2 , pl::_3);
-  auto fct = std::bind(&Runner::dydt, this, pl::_1 , pl::_2 , pl::_3);
+  auto fct = std::bind(&Reactor::dydt, this, pl::_1 , pl::_2 , pl::_3);
 
   double t0 = 0.0;
 
@@ -70,7 +70,7 @@ void solve(std::vector<std::vector<double>> points, double dt, bool verbose)
     //
 }
 
-void Runner::dydt(const dvector &y, dvector &dydt, double t)
+void Reactor::dydt(const dvector &y, dvector &dydt, double t)
 {
     size_t n = dydt.size();
     //double T = dydt.back();
@@ -82,7 +82,7 @@ void Runner::dydt(const dvector &y, dvector &dydt, double t)
 }
 
 
-void Runner::dump(const std::string &csv, std::string sep)
+void Reactor::dump(const std::string &csv, std::string sep)
 {
   // std::ofstream file(csv);
   // for (int i=0; i < times.size(); ++i)
@@ -114,7 +114,7 @@ void Runner::dump(const std::string &csv, std::string sep)
     }
 }
 
-void Runner::dTdt(const dvector &y, dvector &dydt, double t)
+void Reactor::dTdt(const dvector &y, dvector &dydt, double t)
 {
     //
     if (isoThermal)

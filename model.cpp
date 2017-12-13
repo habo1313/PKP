@@ -7,8 +7,7 @@
 //
 
 #include "model.hpp"
-#include <iostream>
-#include <cmath>
+#include <cmath>X
 
 void const Model::printParameters()
 {
@@ -18,26 +17,3 @@ void const Model::printParameters()
   }
 }
 
-void SFOR::calcRate(const dvector &y, dvector &dydt, double t, double T)
-{
-    double vol = y[0];
-    //double T = y[1];
-    dvector par = getParameters();
-    dydt[0] = par[0] * exp(-par[1]/8314.33/T) * (par[2] - vol);
-}
-
-void C2SM::calcRate(const dvector &y, dvector &dydt, double t, double T)
-{
-    const dvector par = getParameters();
-    //double T = y[2];
-    //double v = y[0];
-
-    // fraction of solid
-    double s = y[1];
-    double k1 = par[0] * exp(-par[1]/Rgas/T);
-    double k2 = par[3] * exp(-par[4]/Rgas/T);
-
-    // rates
-    dydt[0] = (par[2] * k1 + par[5] * k2) * s;
-    dydt[1] = -(k1 + k2) * s;
-}

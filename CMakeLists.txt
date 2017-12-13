@@ -11,7 +11,7 @@ link_directories ("/Users/vascella/.local/lib")
 # add_definitions("-std=gnu++14")
 set (CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES model.cpp reactor.cpp)
+set(SOURCE_FILES model.cpp reactor.cpp SFOR.cpp C2SM.cpp)
 
 add_library(pkp SHARED ${SOURCE_FILES})
 

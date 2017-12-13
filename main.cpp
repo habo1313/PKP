@@ -19,7 +19,9 @@
 // #include <functional>
 
 
-// #include "model.hpp"
+#include "model.hpp"
+#include "SFOR.hpp"
+#include "C2SM.hpp"
 #include "reactor.hpp"
 #include <string.h>
 
@@ -33,7 +35,7 @@ int main(int argc, char **argv)
   //YAML::Node config = YAML::LoadFile(argv[1]);
   YAML::Node config = YAML::LoadFile(argv[1]);
 
-  Runner::models model;
+  Reactor::models model;
   std::string modelName = config["model"]["type"].as<std::string>();
   dvector parameters = config["model"]["parameters"].as<dvector>();
 
@@ -41,11 +43,11 @@ int main(int argc, char **argv)
 
   if(modelName==std::string("SFOR"))
   {
-      model = Runner::sfor;
+      model = Reactor::sfor;
   }
   else if(modelName==std::string("C2SM"))
   {
-      model = Runner::c2sm;
+      model = Reactor::c2sm;
   }
   else
   {
@@ -54,8 +56,8 @@ int main(int argc, char **argv)
     }
 
   // set runner with SFOR=0
-  std::cout << "Init Runner with " << modelName <<" - " << model << std::endl;
-  Runner run(model);
+  std::cout << "Init Reactor with " << modelName <<" - " << model << std::endl;
+  Reactor run(model);
 
   std::cout << "Parameters:";
   //dvector parameters = run.getParameters();

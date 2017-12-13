@@ -60,33 +60,5 @@ public:
   dvector const getInitState(){return initState;}
 };
 
-//
-//  Single First Order Reaction (SFOR) model class
-//
-class SFOR: public Model
-{
-public:
-  SFOR(const dvector &par=sforParDefault): Model(par, sforParDefault, "SFOR",
-    sforParNames, sforInitState){}
-  //SFOR(): Model(sforParDefault, sforParDefault, "SFOR", sforParNames,
-  //    sforInitState){};
-  ~SFOR(){}
-  virtual void calcRate(const dvector &y, dvector &dydt, double t, double T);
-};
-
-//
-// Competing 2 Step Model (C2SM) class
-//
-class C2SM: public Model
-{
-public:
-  C2SM(const dvector &par=c2smParDefault):
-    Model(par, c2smParDefault, "C2SM", c2smParNames, c2smInitState){};
-  //C2SM(): Model(c2smParDefault, c2smParDefault, "C2SM", c2smParNames,
-  //    c2smInitState){};
-  ~C2SM(){};
-  virtual void calcRate(const dvector &y, dvector &dydt, double t, double T);
-};
-
 
 #endif /* model_hpp */

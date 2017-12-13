@@ -112,47 +112,47 @@ TEST_F(C2SMTest, rate)
   EXPECT_EQ(dydt[0], rate_c2sm(model->getParameters(), T, s));
 }
 
-class RunnerTest : public ::testing::Test
+class ReactorTest : public ::testing::Test
 {
 protected:
-  Runner *runner;
+  Reactor *reactor;
   dvector parameters = {1e7, 50e6, 0.5};
 
   virtual void SetUp()
   {
-    runner = new Runner(Runner::sfor, parameters);
+    reactor = new Reactor(Reactor::sfor, parameters);
   }
 
   virtual void TearDown()
   {
-    delete runner;
+    delete reactor;
   }
 };
 
-TEST_F(RunnerTest, parameters)
+TEST_F(ReactorTest, parameters)
 {
-  EXPECT_EQ(parameters, runner->getParameters());
+  EXPECT_EQ(parameters, reactor->getParameters());
 }
 
 
-TEST_F(RunnerTest, solve)
+TEST_F(ReactorTest, solve)
 {
   //dvector y0 = {0.0, 1000};
   //double t0 = 0;
   double tEnd = 0.05;
   double dt = 1e-6;
-  runner->solve(tEnd, dt);
-  runner->dump("test.csv");
-  std::vector<double> times = runner->getTimes();
-  std::vector<dvector> states = runner->getStates();
+  reactor->solve(tEnd, dt);
+  reactor->dump("test.csv");
+  std::vector<double> times = reactor->getTimes();
+  std::vector<dvector> states = reactor->getStates();
   EXPECT_EQ(times.size(), states.size());
   EXPECT_EQ(states[0].size(), sforInitState.size()+1);
 }
 
-TEST(RunnerTest2, dydt)
+TEST(ReactorTest2, dydt)
 {
-    Runner runner(Runner::sfor);
-    dvector parameters = runner.getParameters();
+    Reactor reactor(Reactor::sfor);
+    dvector parameters = reactor.getParameters();
     double T = 1000;
     dvector y = {0.0, T};
     dvector dydt(y.size());
@@ -160,11 +160,11 @@ TEST(RunnerTest2, dydt)
 
     // check model rate
     double t=0;
-    runner.model->calcRate(y, dydt, t, T);
+    reactor.model->calcRate(y, dydt, t, T);
     EXPECT_EQ(rate, dydt[0]);
 
     //std::cout << "calc dydt" << '\n';
-    runner.dydt(y, dydt, t);
+    reactor.dydt(y, dydt, t);
     EXPECT_EQ(rate, dydt[0]);
 }
 

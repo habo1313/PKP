@@ -6,11 +6,13 @@
 //  Copyright © 2017 Michele Vascellari. All rights reserved.
 //
 
-#ifndef runner_hpp
-#define runner_hpp
+#ifndef reactor_hpp
+#define reactor_hpp
 
 //#include <memory>
 #include "model.hpp"
+#include "SFOR.hpp"
+#include "C2SM.hpp"
 #include <iostream>
 #include <string>
 
@@ -34,7 +36,10 @@ struct push_back_state_and_time
     }
 };
 
-class Runner
+/*
+    Reactor runner class
+*/
+class Reactor
 {
 protected:
   Model * model;
@@ -47,11 +52,11 @@ protected:
   void dydt(const dvector &y, dvector &dydt, double t);
   void dTdt(const dvector &y, dvector &dydt, double t);
 
-  FRIEND_TEST(RunnerTest2, dydt);
+  FRIEND_TEST(ReactorTest2, dydt);
   //std::unique_ptr<Model> model;
 public:
   enum models {sfor, c2sm};
-  Runner(models modelType, dvector parameters)
+  Reactor(models modelType, dvector parameters)
   {
     switch (modelType)
       {
@@ -62,7 +67,7 @@ public:
       }
     //throw 0;
   }
-  Runner(models modelType)
+  Reactor(models modelType)
   {
     switch (modelType)
       {
@@ -73,7 +78,7 @@ public:
       }
     //throw 0;
   }
-  ~Runner(){delete model;}
+  ~Reactor(){delete model;}
   void solve(double t, double T=1000, double dt=1e-4, bool verbose=false);
   void solve(std::vector<std::vector<double>> points, double dt=1e-4,
       bool verbose=false);
