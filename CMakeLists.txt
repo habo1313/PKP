@@ -19,6 +19,10 @@ add_library(pkp SHARED ${SOURCE_FILES})
 add_executable(test.x test.cpp)
 target_link_libraries(test.x pkp gtest)
 
+# test reactorT
+add_executable(test_reactorT.x test_reactorT.cpp)
+target_link_libraries(test_reactorT.x pkp gtest)
+
 # main
 add_executable(main.x main.cpp)
 target_link_libraries(main.x pkp yaml-cpp)
