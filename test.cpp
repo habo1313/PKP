@@ -86,6 +86,13 @@ TEST_F(SFORTest, getNParameters)
   EXPECT_EQ(sforParNames, model->getParametersNames());
 }
 
+TEST_F(SFORTest, setParameters)
+{
+    dvector newParameters = {5e7, 40e6, 0.6};
+    model->setParameters(newParameters);
+    EXPECT_EQ(newParameters, model->getParameters());
+}
+
 TEST_F(SFORTest, getParameters)
 {
   EXPECT_EQ(parameters, model->getParameters());

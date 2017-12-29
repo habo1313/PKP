@@ -43,8 +43,11 @@ protected:
 public:
   Model(const dvector &par, const dvector &parDef, const std::string &model,
   const parVector parNames, const dvector istate):
-    parameters(par), parametersDefault(parDef), name(model),
-    parametersNames(parNames), initState(istate)
+    parameters(par),
+    parametersDefault(parDef),
+    name(model),
+    parametersNames(parNames),
+    initState(istate)
   {
     if (par.size() != parDef.size())
       throw 0;
@@ -58,6 +61,7 @@ public:
   parVector const getParametersNames(){return parametersNames;}
   void const printParameters();
   dvector const getInitState(){return initState;}
+  void setParameters(const dvector & par);
 };
 
 

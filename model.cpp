@@ -7,7 +7,7 @@
 //
 
 #include "model.hpp"
-#include <cmath>X
+#include <cmath>
 
 void const Model::printParameters()
 {
@@ -17,3 +17,9 @@ void const Model::printParameters()
   }
 }
 
+void Model::setParameters(const dvector &par)
+{
+    if (par.size() != parametersDefault.size())
+        throw 0;
+    parameters = par;
+}
