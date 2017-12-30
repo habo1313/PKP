@@ -8,82 +8,80 @@
 
 #include <iostream>
 
-#include <cmath>
-#include <string>
-#include <boost/numeric/odeint.hpp>
+// #include <cmath>
+// #include <string>
+// #include <boost/numeric/odeint.hpp>
 
 // yaml reader
 #include <yaml-cpp/yaml.h>
 
-
 // #include <functional>
-
-
 #include "model.hpp"
 #include "SFOR.hpp"
 #include "C2SM.hpp"
-#include "reactor.hpp"
+#include "reactort.hpp"
 #include <string.h>
 
+//template <typename T>
+//void runReactor(ReactorT<T> reactor)
 
 int main(int argc, char **argv)
 {
-  //dvector parameters = {1e6, 60e6, 0.1};
-  std::cout << "Main program" << std::endl;
+    //dvector parameters = {1e6, 60e6, 0.1};
+    std::cout << "Main program" << std::endl;
 
+    //YAML::Node config = YAML::LoadFile(argv[1]);
+    std::cout << "Read YAML file";
+    YAML::Node config = YAML::LoadFile(argv[1]);
+    std::cout << "...done" << '\n';
+    // read model and parameters
+    std::string modelName = config["model"]["type"].as<std::string>();
+    dvector parameters = config["model"]["parameters"].as<dvector>();
 
-  //YAML::Node config = YAML::LoadFile(argv[1]);
-  YAML::Node config = YAML::LoadFile(argv[1]);
+    // // define reactor object
+    // if(modelName==std::string("SFOR"))
+    // {
+    //     //model = Reactor::sfor;
+    //     std::cout << "Create reactor with SFOR" << '\n';
+    //     ReactorT<SFOR> reactor(parameters);
+    //     reactor.printParameters();
+    // }
+    // else if(modelName==std::string("C2SM"))
+    // {
+    //     //model = Reactor::c2sm;
+    //     std::cout << "Create reactor with C2SM" << '\n';
+    //     ReactorT<C2SM> reactor(parameters);
+    // }
+    // else
+    // {
+    //     std::cout << "Model " << argv[1] << " not defined" << std::endl;
+    //     return -1;
+    // }
+    std::cout << "Init Reactor with SFOR" << '\n';
+    ReactorT<SFOR> reactor(parameters);
 
-  Reactor::models model;
-  std::string modelName = config["model"]["type"].as<std::string>();
-  dvector parameters = config["model"]["parameters"].as<dvector>();
+    // set runner with SFOR=0
+    //std::cout << "Init Reactor with " << modelName <<" - " << model <<
+    //std::endl;
+    //Reactor run(model);
 
+    reactor.printParameters();
 
+    // define parameters
+    //dvector y = {0, 1000};
+    double t = config["operating_conditions"]["t"].as<double>();
+    double T = config["operating_conditions"]["T"].as<double>();
+    //double t0 = 0.0;
+    double dt = config["operating_conditions"]["dt"].as<double>();
 
-  if(modelName==std::string("SFOR"))
-  {
-      model = Reactor::sfor;
-  }
-  else if(modelName==std::string("C2SM"))
-  {
-      model = Reactor::c2sm;
-  }
-  else
-  {
-      std::cout << "Model " << argv[1] << " not defined" << std::endl;
-      return -1;
-    }
+    // solve
+    std::cout << "Solve" << std::endl;
+    reactor.solve(t, T, dt, false);
 
-  // set runner with SFOR=0
-  std::cout << "Init Reactor with " << modelName <<" - " << model << std::endl;
-  Reactor run(model);
+    // get solutions
+    //std::vector<double> times = reactor.getTimes();
+    //std::vector<dvector> states = reactor.getStates();
+    reactor.dump("solution.csv");
 
-  std::cout << "Parameters:";
-  //dvector parameters = run.getParameters();
-  //for (auto p: parameters)
-  //{
-  //  std::cout << p << "\t";
-  //}
-  //std::cout << std::endl;
-  run.printParameters();
-
-  // define parameters
-  //dvector y = {0, 1000};
-  double t = config["operating_conditions"]["t"].as<double>();
-  double T = config["operating_conditions"]["T"].as<double>();
-  //double t0 = 0.0;
-  double dt = config["operating_conditions"]["dt"].as<double>();
-
-  // solve
-  std::cout << "Solve" << std::endl;
-  run.solve(t, T, dt, true);
-
-  // get solutions
-  std::vector<double> times = run.getTimes();
-  std::vector<dvector> states = run.getStates();
-
-  run.dump("solution.csv");
-
-  return 0;
+    return 0;
 }

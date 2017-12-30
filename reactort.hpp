@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include "model.hpp"
+#include "csv.hpp"
 
 // include gtest for testing purpose
 #include "gtest/gtest_prod.h"
@@ -48,13 +49,14 @@ public:
     void dTdt(const dvector &y, dvector &dydt, double t);
 
     dvector getModelParameters();
+    void setModelParameters(const dvector &parameters);
 
     void solve(double t, double temperature=1000, double dt=1e-4, bool verbose=false);
     //void solve(std::vector<std::vector<double>> points, double dt=1e-4,
     //    bool verbose=false);
-    //std::vector<double> getTimes(){return times;}
-    //std::vector<dvector> getStates(){return states;}
-    //void dump(const std::string &csv, std::string sep = ",");
+    std::vector<double> getTimes(){return times;}
+    std::vector<dvector> getStates(){return states;}
+    void dump(const std::string &csv, std::string sep = ",");
     void printParameters();//{model.printParameters();}
 };
 
@@ -69,8 +71,9 @@ ReactorT<T>::ReactorT(): isoThermal(true)
 template <class T>
 ReactorT<T>::ReactorT(const dvector & parameters): isoThermal(true)
 {
-    std::cout << "Construct ReactorT(parameters)" << '\n';
-    model.setParameters(parameters);
+    //std::cout << "Construct ReactorT(parameters)" << '\n';
+    //model.setParameters(parameters);
+    setModelParameters(parameters);
 }
 
 template <class T>
@@ -102,6 +105,12 @@ void ReactorT<T>::dTdt(const dvector &y, dvector &dydt, double t)
         //dydt.emplace(dydt.end()-1, 0.0);
 }
 
+template<class T>
+void ReactorT<T>::setModelParameters(const dvector &parameters)
+{
+    model.setParameters(parameters);
+}
+
 template <class T>
 void ReactorT<T>::solve(
     double t,
@@ -123,10 +132,10 @@ void ReactorT<T>::solve(
 
     //double last=1;
 
-    controlled_stepper_type stepper = make_controlled<error_stepper_type >(1.0e-10 , 1.0e-6 );
+    controlled_stepper_type stepper = make_controlled<error_stepper_type>(1.0e-10 , 1.0e-6 );
     //
     std::for_each(
-        make_adaptive_time_iterator_begin(stepper, fct, y0, 0.0, 0.1, 1e-3),
+        make_adaptive_time_iterator_begin(stepper, fct, y0, 0.0, t, dt),
         make_adaptive_time_iterator_end(stepper, fct, y0),
         [&tsaved, &ysaved, verbose](std::pair< const dvector & , const double & > x )
         {
@@ -135,6 +144,32 @@ void ReactorT<T>::solve(
             tsaved.push_back(x.second);
             ysaved.push_back(x.first);
           });
+
+    times = tsaved;
+    states = ysaved;
+}
+
+template <class T>
+void ReactorT<T>::dump(const std::string &csv, std::string sep)
+{
+    /// Dump results in a file
+    csvfile file(csv);
+    file << "time" ;
+    char buffer[2];
+    for (int j=0; j< states[0].size()-1; ++j)
+    {
+        std::sprintf (buffer, "y%d", j);
+        file << std::string(buffer);
+    }
+    file << "Temperature" << endrow;
+
+    for (int i=0; i < times.size(); ++i)
+    {
+        file << times[i];
+        for (double &status: states[i])
+            file << status;
+        file << endrow;
+    }
 }
 
 #endif /* model_hpp */

@@ -1,3 +1,7 @@
 build/
 .stdafx.c++.pch
 compiling_error.txt
+.idea
+cmake-build*
+.clang_complete
+solution.csv
