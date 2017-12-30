@@ -64,7 +64,6 @@ int main(int argc, char **argv)
 template <typename T> void runReactor(ReactorT<T> reactor, YAML::Node config)
 {
     dvector parameters = config["model"]["parameters"].as<dvector>();
-    std::cout << "Init Reactor with SFOR" << '\n';
     reactor.setModelParameters(parameters);
     reactor.printParameters();
 

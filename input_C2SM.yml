@@ -1,0 +1,9 @@
+# input yaml file
+model:
+    type: C2SM
+    parameters: [1e6, 50e6, 0.3, 1e8, 100e6, 0.6]
+
+operating_conditions:
+    T: 1000
+    t: 0.01
+    dt: 1e-6

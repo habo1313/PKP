@@ -65,7 +65,7 @@ template <class T>
 ReactorT<T>::ReactorT(): isoThermal(true)
 {
     // do nothing keep model initialized
-    std::cout << "Construct ReactorT()" << '\n';
+    //std::cout << "Construct ReactorT()" << '\n';
 }
 
 template <class T>
