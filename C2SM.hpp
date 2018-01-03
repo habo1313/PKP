@@ -6,6 +6,7 @@
 #define PKP_C2SM_HPP
 
 #include "model.hpp"
+#include "ModelFactory.hpp"
 
 // C2SM
 const dvector c2smParDefault = {1e6, 50e6, 0.3, 1e8, 100e6, 1.0};

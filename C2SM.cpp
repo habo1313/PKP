@@ -22,3 +22,5 @@ void C2SM::calcRate(const std::vector<double> &y, std::vector<double> &dydt, dou
     dydt[0] = (par[2] * k1 + par[5] * k2) * s;
     dydt[1] = -(k1 + k2) * s;
 }
+
+ModelFactoryRegister<C2SM> addC2SM("C2SM");

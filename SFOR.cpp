@@ -12,3 +12,5 @@ void SFOR::calcRate(const std::vector<double> &y, std::vector<double> &dydt, dou
     std::vector<double> par = getParameters();
     dydt[0] = par[0] * exp(-par[1]/Rgas/T) * (par[2] - vol);
 }
+
+ModelFactoryRegister<SFOR> add("SFOR");

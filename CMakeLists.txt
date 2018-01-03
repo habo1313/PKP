@@ -11,7 +11,7 @@ link_directories ("/Users/vascella/.local/lib")
 # add_definitions("-std=gnu++14")
 set (CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES model.cpp reactor.cpp SFOR.cpp C2SM.cpp)
+set(SOURCE_FILES model.cpp reactor.cpp SFOR.cpp C2SM.cpp ModelFactory.cpp)
 
 add_library(pkp SHARED ${SOURCE_FILES})
 
@@ -27,6 +27,9 @@ target_link_libraries(test_reactorT.x pkp gtest)
 add_executable(main.x main.cpp)
 target_link_libraries(main.x pkp yaml-cpp)
 
+# main
+add_executable(test_factory.x test_factory.cpp)
+target_link_libraries(test_factory.x pkp)
 
 #add_executable(test.x gtest.cpp)
 #target_link_libraries(test.x test gtest)
