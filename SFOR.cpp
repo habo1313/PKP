@@ -10,5 +10,5 @@ void SFOR::calcRate(const std::vector<double> &y, std::vector<double> &dydt, dou
     double vol = y[0];
     //double T = y[1];
     std::vector<double> par = getParameters();
-    dydt[0] = par[0] * exp(-par[1]/8314.33/T) * (par[2] - vol);
+    dydt[0] = par[0] * exp(-par[1]/Rgas/T) * (par[2] - vol);
 }

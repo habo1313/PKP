@@ -21,16 +21,6 @@ typedef std::vector<std::string> parVector;
 
 const double Rgas = 8314.33;
 
-// SFOR
-const dvector sforParDefault = {1e6, 50e6, 0.6};
-const parVector sforParNames = {"A", "E", "y0"};
-const dvector sforInitState = {0.0}; // [vol]
-
-// C2SM
-const dvector c2smParDefault = {1e6, 50e6, 0.3, 1e8, 100e6, 1.0};
-const parVector c2smParNames = {"A1", "E1", "y1", "A2", "E2", "y2"};
-const dvector c2smInitState = {0.0, 1.0}; // [vol, solid]
-
 class Model
 {
 protected:
@@ -62,6 +52,7 @@ public:
   void const printParameters();
   dvector const getInitState(){return initState;}
   void setParameters(const dvector & par);
+  
 };
 
 

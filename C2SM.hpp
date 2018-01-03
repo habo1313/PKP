@@ -6,6 +6,11 @@
 #define PKP_C2SM_HPP
 
 #include "model.hpp"
+
+// C2SM
+const dvector c2smParDefault = {1e6, 50e6, 0.3, 1e8, 100e6, 1.0};
+const parVector c2smParNames = {"A1", "E1", "y1", "A2", "E2", "y2"};
+const dvector c2smInitState = {0.0, 1.0}; // [vol, solid]
 //
 // Competing 2 Step Model (C2SM) class
 //
@@ -19,7 +24,5 @@ public:
   ~C2SM(){};
   virtual void calcRate(const std::vector<double> &y, std::vector<double> &dydt, double t, double T);
 };
-
-
 
 #endif //PKP_C2SM_HPP

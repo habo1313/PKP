@@ -6,13 +6,18 @@
 #define PKP_SFOR_HPP
 
 #include "model.hpp"
+
+// SFOR
+const dvector sforParDefault = {1e6, 50e6, 0.6};
+const parVector sforParNames = {"A", "E", "y0"};
+const dvector sforInitState = {0.0}; // [vol]
 //
 //  Single First Order Reaction (SFOR) model class
 //
 class SFOR: public Model
 {
 public:
-  SFOR(const std::vector<double> &par= sforParDefault): Model(par, sforParDefault, "SFOR",
+  SFOR(const dvector &par= sforParDefault): Model(par, sforParDefault, "SFOR",
                                                               sforParNames, sforInitState){}
   //SFOR(): Model(sforParDefault, sforParDefault, "SFOR", sforParNames,
   //    sforInitState){};

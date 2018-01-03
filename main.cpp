@@ -31,7 +31,9 @@ int main(int argc, char **argv)
 
     //YAML::Node config = YAML::LoadFile(argv[1]);
     std::cout << "Read YAML file";
+
     YAML::Node config = YAML::LoadFile(argv[1]);
+
     std::cout << "...done" << '\n';
     // read model and parameters
     std::string modelName = config["model"]["type"].as<std::string>();

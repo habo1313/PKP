@@ -5,6 +5,8 @@
 #include "C2SM.hpp"
 #include <cmath>
 
+using namespace std;
+
 void C2SM::calcRate(const std::vector<double> &y, std::vector<double> &dydt, double t, double T)
 {
     const std::vector<double> par = getParameters();
