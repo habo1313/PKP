@@ -10,6 +10,7 @@ int main(int argc, char* argv[])
     dvector parameters = {1e6, 60e6, 0.1};
     Model *model = ModelFactory::instantiate("SFOR");
     model->setParameters(parameters);
-    model->printParameters();
+    //model->printParameters();
+    std::cout << *model << "\n";
     return 0;
 }

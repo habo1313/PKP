@@ -52,7 +52,7 @@ public:
   void const printParameters();
   dvector const getInitState(){return initState;}
   void setParameters(const dvector & par);
-  
+  friend std::ostream& operator<< (std::ostream& stream, const Model & t);
 };
 
 
