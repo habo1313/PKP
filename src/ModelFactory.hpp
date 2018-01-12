@@ -13,27 +13,28 @@
 #include <functional>
 #include "model.hpp"
 
+namespace pkp {
+    class ModelFactory {
+    private:
+    public:
+        //ModelFactory();
+        //~ModelFactory();
+        typedef std::unordered_map<std::string, std::function<Model*()>> registry_map;
+        //typedef std::unordered_map<std::string, std::function<Model*(const dvector &par)>> registry_map_par;
+        static Model * instantiate(const std::string& name);
+        static Model * instantiate(const std::string& name, const dvector &par);
+        static registry_map & registry();
+        //static registry_map_par & registry_par();
+    };
 
-class ModelFactory {
-private:
-public:
-    //ModelFactory();
-    //~ModelFactory();
-    typedef std::unordered_map<std::string, std::function<Model*()>> registry_map;
-    //typedef std::unordered_map<std::string, std::function<Model*(const dvector &par)>> registry_map_par;
-    static Model * instantiate(const std::string& name);
-    static Model * instantiate(const std::string& name, const dvector &par);
-    static registry_map & registry();
-    //static registry_map_par & registry_par();
-};
-
-template<typename T> struct ModelFactoryRegister
-{
-    ModelFactoryRegister(std::string name)
+    template<typename T> struct ModelFactoryRegister
     {
-        ModelFactory::registry()[name] = []() {return new T;};
-        std::cout << "Registering Model class '" << name << "'\n";
-    }
-};
+        ModelFactoryRegister(std::string name)
+        {
+            ModelFactory::registry()[name] = []() {return new T;};
+            std::cout << "Registering Model class '" << name << "'\n";
+        }
+    };
+}
 
 #endif /* ModelFactory_hpp */

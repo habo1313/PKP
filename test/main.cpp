@@ -22,6 +22,8 @@
 #include "reactort.hpp"
 #include <string.h>
 
+using namespace pkp;
+
 template <typename T> void runReactor(ReactorT<T> reactor, YAML::Node config);
 
 int main(int argc, char **argv)

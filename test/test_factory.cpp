@@ -2,6 +2,7 @@
 #include "SFOR.hpp"
 #include "ModelFactory.hpp"
 
+using namespace pkp;
 
 int main(int argc, char* argv[])
 {

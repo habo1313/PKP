@@ -4,13 +4,14 @@
 
 #include "SFOR.hpp"
 #include <cmath>
+namespace pkp{
+    void SFOR::calcRate(const std::vector<double> &y, std::vector<double> &dydt, double t, double T)
+    {
+        double vol = y[0];
+        //double T = y[1];
+        std::vector<double> par = getParameters();
+        dydt[0] = par[0] * exp(-par[1]/Rgas/T) * (par[2] - vol);
+    }
 
-void SFOR::calcRate(const std::vector<double> &y, std::vector<double> &dydt, double t, double T)
-{
-    double vol = y[0];
-    //double T = y[1];
-    std::vector<double> par = getParameters();
-    dydt[0] = par[0] * exp(-par[1]/Rgas/T) * (par[2] - vol);
+    ModelFactoryRegister<SFOR> add("SFOR");
 }
-
-ModelFactoryRegister<SFOR> add("SFOR");
