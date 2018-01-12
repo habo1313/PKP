@@ -10,18 +10,22 @@ namespace pkp{
     //ModelFactory::ModelFactory()  {}
     //ModelFactory::~ModelFactory() {}
 
-    Model * ModelFactory::instantiate(const std::string& name)
+    std::shared_ptr<Model> ModelFactory::instantiate(const std::string& name)
     {
         auto it = ModelFactory::registry().find(name);
-        return it == ModelFactory::registry().end() ? nullptr : (it->second)();
+        //return it == ModelFactory::registry().end() ? nullptr : (it->second)();
+        if (it != ModelFactory::registry().end())
+            return it->second();
+        else
+            return nullptr;
     }
 
     // TODO fix it
-    Model * ModelFactory::instantiate(const std::string& name, const dvector &par)
-    {
-        auto it = ModelFactory::registry().find(name);
-        return it == ModelFactory::registry().end() ? nullptr : (it->second)();
-    }
+    // std::shared_ptr<Model> ModelFactory::instantiate(const std::string& name, const dvector &par)
+    // {
+    //     auto it = ModelFactory::registry().find(name);
+    //     return it == ModelFactory::registry().end() ? nullptr : (it->second)();
+    // }
 
     ModelFactory::registry_map & ModelFactory::registry()
     {

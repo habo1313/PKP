@@ -5,3 +5,14 @@ compiling_error.txt
 cmake-build*
 .clang_complete
 solution.csv
+.cproject
+.project
+cmake_install.cmake
+CMakeCache.txt
+bin/*.x
+CMakeFiles
+Makefile
+lib
+test.csv
+test.txt
+compile_commands.json

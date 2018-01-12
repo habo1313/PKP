@@ -19,10 +19,12 @@ namespace pkp {
     public:
         //ModelFactory();
         //~ModelFactory();
-        typedef std::unordered_map<std::string, std::function<Model*()>> registry_map;
+        typedef std::unordered_map<std::string, std::function<std::shared_ptr<Model>()>> registry_map;
+        //typedef std::unordered_map<std::string, std::function<std::shared_ptr<Model>(const dvector &)>> registry_map_par;
         //typedef std::unordered_map<std::string, std::function<Model*(const dvector &par)>> registry_map_par;
-        static Model * instantiate(const std::string& name);
-        static Model * instantiate(const std::string& name, const dvector &par);
+        static std::shared_ptr<Model> instantiate(const std::string& name);
+        //static std::shared_ptr<Model> instantiate(const std::string& name, const dvector& par);
+        //static std::shared_ptr<Model> instantiate(const std::string& name, const dvector &par);
         static registry_map & registry();
         //static registry_map_par & registry_par();
     };
@@ -31,7 +33,7 @@ namespace pkp {
     {
         ModelFactoryRegister(std::string name)
         {
-            ModelFactory::registry()[name] = []() {return new T;};
+            ModelFactory::registry()[name] = []() {return std::make_shared<T>();};
             std::cout << "Registering Model class '" << name << "'\n";
         }
     };
