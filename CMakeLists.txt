@@ -6,10 +6,18 @@ project (PKP)
 include_directories ("/Users/vascella/.local/include")
 link_directories ("/Users/vascella/.local/lib")
 
-
 #set ( CMAKE_C_FLAGS "-std=gnu++11")
 # add_definitions("-std=gnu++14")
 set (CMAKE_CXX_STANDARD 11)
+
+# https://stackoverflow.com/questions/36078456/cmake-add-include-paths-to-clang
+# generates the file compile_commands.json.
+# With this file the include directives are working correctly.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# cmake -DCMAKE_BUILD_TYPE=Debug ..
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
 
 set(SOURCE_FILES model.cpp reactor.cpp SFOR.cpp C2SM.cpp ModelFactory.cpp)
 
