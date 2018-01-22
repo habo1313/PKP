@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include "model.hpp"
+#include "reactor.hpp"
 #include "csv.hpp"
 
 // include gtest for testing purpose
@@ -25,10 +26,6 @@ namespace pkp{
     typedef runge_kutta_cash_karp54< dvector > error_stepper_type;
     typedef controlled_runge_kutta< error_stepper_type > controlled_stepper_type;
 
-    void printv(const dvector &y, const double t)
-    {
-      std::cout << "t=" << t << " y=" << y[0] << std::endl;
-    }
 
     template <class T>
     class ReactorT

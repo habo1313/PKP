@@ -129,7 +129,7 @@ namespace pkp {
 
       virtual void SetUp()
       {
-        reactor = new Reactor(Reactor::sfor, parameters);
+        reactor = new Reactor("SFOR", parameters);
       }
 
       virtual void TearDown()
@@ -160,7 +160,7 @@ namespace pkp {
 
     TEST(ReactorTest2, dydt)
     {
-        Reactor reactor(Reactor::sfor);
+        Reactor reactor("SFOR", {1e7, 50e6, 0.5});
         dvector parameters = reactor.getParameters();
         double T = 1000;
         dvector y = {0.0, T};

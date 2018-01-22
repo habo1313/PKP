@@ -13,6 +13,8 @@
 #include "model.hpp"
 #include "SFOR.hpp"
 #include "C2SM.hpp"
+//#include "ModelFactory.hpp"
+#include "ReactorFactory.hpp"
 #include <iostream>
 #include <string>
 
@@ -43,7 +45,8 @@ namespace pkp {
     class Reactor
     {
     protected:
-        Model * model;
+        //Model * model;
+        std::shared_ptr<Model> model;
         std::vector<double> times;
         std::vector<dvector> states;
         bool isoThermal;
@@ -57,29 +60,19 @@ namespace pkp {
         //std::unique_ptr<Model> model;
     public:
         enum models {sfor, c2sm};
-        Reactor(models modelType, dvector parameters)
-        {
-            switch (modelType)
-            {
-            case sfor:
-    	           model = new SFOR(parameters); break;
-            case c2sm:
-    	           model = new C2SM(parameters); break;
-               }
-        //throw 0;
-        }
-        Reactor(models modelType)
-        {
-            switch (modelType)
-            {
-            case sfor:
-    	           model = new SFOR(); break;
-            case c2sm:
-    	           model = new C2SM(); break;
-            }
-            //throw 0;
-        }
-        ~Reactor(){delete model;}
+        Reactor(const std::string& modelType, dvector parameters);
+        // Reactor(models modelType)
+        // {
+        //     switch (modelType)
+        //     {
+        //     case sfor:
+    	//            model = new SFOR(); break;
+        //     case c2sm:
+    	//            model = new C2SM(); break;
+        //     }
+        //     //throw 0;
+        // }
+        ~Reactor();
         void solve(double t, double T=1000, double dt=1e-4, bool verbose=false);
         void solve(std::vector<std::vector<double>> points, double dt=1e-4, bool verbose=false);
         dvector const getParameters(){return model->getParameters();}

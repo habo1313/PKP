@@ -11,7 +11,10 @@
 
 #include <unordered_map>
 #include <functional>
+#include <memory>
 #include "model.hpp"
+#include "SFOR.hpp"
+#include "C2SM.hpp"
 
 namespace pkp {
     class ModelFactory {
@@ -21,12 +24,10 @@ namespace pkp {
         //~ModelFactory();
         typedef std::unordered_map<std::string, std::function<std::shared_ptr<Model>()>> registry_map;
         //typedef std::unordered_map<std::string, std::function<std::shared_ptr<Model>(const dvector &)>> registry_map_par;
-        //typedef std::unordered_map<std::string, std::function<Model*(const dvector &par)>> registry_map_par;
         static std::shared_ptr<Model> instantiate(const std::string& name);
         //static std::shared_ptr<Model> instantiate(const std::string& name, const dvector& par);
-        //static std::shared_ptr<Model> instantiate(const std::string& name, const dvector &par);
         static registry_map & registry();
-        //static registry_map_par & registry_par();
+        //static registry_map & registry_par();
     };
 
     template<typename T> struct ModelFactoryRegister

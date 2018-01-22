@@ -21,6 +21,10 @@ namespace pkp{
       std::cout << "t=" << t << " y=" << y[0] << std::endl;
     }
 
+    Reactor::Reactor(const std::string& modelType, dvector parameters):
+        model(ModelFactory2::create(modelType, parameters)){}
+
+    Reactor::~Reactor(){}
 
     void Reactor::solve(double t, double T, double dt, bool verbose)
     {
@@ -35,7 +39,7 @@ namespace pkp{
         //auto fct = std::bind(&Model::calcRate, model, pl::_1 , pl::_2 , pl::_3);
         auto fct = std::bind(&Reactor::dydt, this, pl::_1 , pl::_2 , pl::_3);
 
-        double t0 = 0.0;
+        // double t0 = 0.0;
 
         //std::vector<double> ts = {t0};
         //std::vector<dvector> xs = {y0};
@@ -49,10 +53,10 @@ namespace pkp{
         dvector tsaved;
         std::vector<dvector> ysaved;
 
-        double last=1;
+        // double last=1;
         controlled_stepper_type stepper = make_controlled< error_stepper_type >(1.0e-10 , 1.0e-6 );
         std::for_each(
-            make_adaptive_time_iterator_begin(stepper, fct, y0, 0.0, 0.1, 1e-3),
+            make_adaptive_time_iterator_begin(stepper, fct, y0, 0.0, t, dt),
             make_adaptive_time_iterator_end(stepper, fct, y0),
             [&tsaved, &ysaved, verbose]( std::pair< const dvector & , const double & > x )
             {
@@ -73,7 +77,7 @@ namespace pkp{
 
     void Reactor::dydt(const dvector &y, dvector &dydt, double t)
     {
-        size_t n = dydt.size();
+        //size_t n = dydt.size();
         //double T = dydt.back();
         //double T = y[n-1];
         double T = y.back();
