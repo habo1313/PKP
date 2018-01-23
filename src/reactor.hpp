@@ -9,12 +9,10 @@
 #ifndef reactor_hpp
 #define reactor_hpp
 
-//#include <memory>
 #include "model.hpp"
 #include "SFOR.hpp"
 #include "C2SM.hpp"
-//#include "ModelFactory.hpp"
-#include "ReactorFactory.hpp"
+#include "ModelFactory.hpp"
 #include <iostream>
 #include <string>
 #include "algorithm"
@@ -64,17 +62,7 @@ namespace pkp {
     public:
         //enum models {sfor, c2sm};
         Reactor(const std::string& modelType, dvector parameters);
-        // Reactor(models modelType)
-        // {
-        //     switch (modelType)
-        //     {
-        //     case sfor:
-    	//            model = new SFOR(); break;
-        //     case c2sm:
-    	//            model = new C2SM(); break;
-        //     }
-        //     //throw 0;
-        // }
+        Reactor(const std::string& modelType);
         ~Reactor();
         void solve(double dt=1e-4, bool verbose=false);
         void solve(std::vector<std::vector<double>> points, double dt=1e-4, bool verbose=false);

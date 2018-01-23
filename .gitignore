@@ -16,3 +16,4 @@ lib
 test.csv
 test.txt
 compile_commands.json
+cython/pkpc.cpp

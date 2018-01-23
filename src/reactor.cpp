@@ -22,7 +22,10 @@ namespace pkp{
     }
 
     Reactor::Reactor(const std::string& modelType, dvector parameters):
-        model(ModelFactory2::create(modelType, parameters)){}
+        model(ModelFactory::create(modelType, parameters)){}
+
+    Reactor::Reactor(const std::string& modelType):
+        model(ModelFactory::create(modelType)){}
 
     Reactor::~Reactor(){}
 

@@ -10,7 +10,7 @@ namespace pkp{
     //ModelFactory::ModelFactory()  {}
     //ModelFactory::~ModelFactory() {}
 
-    std::shared_ptr<Model> ModelFactory::instantiate(const std::string& name)
+    std::shared_ptr<Model> ModelFactory::create(const std::string& name)
     {
         auto it = ModelFactory::registry().find(name);
         //return it == ModelFactory::registry().end() ? nullptr : (it->second)();
@@ -20,16 +20,25 @@ namespace pkp{
             return nullptr;
     }
 
-    // TODO fix it
-    // std::shared_ptr<Model> ModelFactory::instantiate(const std::string& name, const dvector &par)
-    // {
-    //     auto it = ModelFactory::registry().find(name);
-    //     return it == ModelFactory::registry().end() ? nullptr : (it->second)();
-    // }
+    std::shared_ptr<Model> ModelFactory::create(const std::string& name, const dvector & par)
+    {
+        auto it = ModelFactory::registry_par().find(name);
+        //return it == ModelFactory::registry().end() ? nullptr : (it->second)();
+        if (it != ModelFactory::registry_par().end())
+            return it->second(par);
+        else
+            return nullptr;
+    }
 
     ModelFactory::registry_map & ModelFactory::registry()
     {
         static registry_map impl;
+        return impl;
+    }
+
+    ModelFactory::registry_map_par & ModelFactory::registry_par()
+    {
+        static registry_map_par impl;
         return impl;
     }
 }

@@ -5,6 +5,7 @@ from libcpp cimport bool
 cdef extern from "reactor.hpp" namespace "pkp":
     cdef cppclass CxxReactor "pkp::Reactor":
         CxxReactor(string, vector[double])
+        CxxReactor(string)
         void solve(double dt, bool verbose)
         vector[double] getParameters()
         void setParameters(vector[double])
@@ -22,7 +23,7 @@ cdef class Reactor:
     Devolatilization reactor with prescribed particle temperature.
     """
     cdef CxxReactor* _c_reactor
-    def __cinit__(self, name, parameters):
+    def __cinit__(self, name, parameters=None):
         """
         Parameters
         ----------
@@ -32,8 +33,12 @@ cdef class Reactor:
             List of parameters
         """
         cdef string c_name = name.encode()
-        cdef vector[double] c_parameters = parameters
-        self._c_reactor = new CxxReactor(c_name, c_parameters)
+        cdef vector[double] c_parameters
+        if parameters is None:
+            self._c_reactor = new CxxReactor(c_name)
+        else:
+            c_parameters = parameters
+            self._c_reactor = new CxxReactor(c_name, c_parameters)
 
     def __dealloc__(self):
         del self._c_reactor

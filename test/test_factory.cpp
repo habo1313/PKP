@@ -14,9 +14,13 @@ int main(int argc, char* argv[])
     auto model = ModelFactory2::create("SFOR", parameters);
     model->printParameters();
 
-    auto model1 = ModelFactory::instantiate("SFOR");
+    auto model1 = ModelFactory::create("C2SM");
     model1->printParameters();
-    
+
+    auto model2 = ModelFactory::create("SFOR", parameters);
+    model2->printParameters();
+
     std::cout << *model << "\n";
+    std::cout << *model1 << "\n";
     return 0;
 }
