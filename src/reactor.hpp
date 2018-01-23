@@ -59,7 +59,7 @@ namespace pkp {
         FRIEND_TEST(ReactorTest2, dydt);
         //std::unique_ptr<Model> model;
     public:
-        enum models {sfor, c2sm};
+        //enum models {sfor, c2sm};
         Reactor(const std::string& modelType, dvector parameters);
         // Reactor(models modelType)
         // {
