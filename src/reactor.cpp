@@ -129,4 +129,8 @@ namespace pkp{
             //
         }
     }
+
+    void Reactor::setParameters(const dvector & parameters){
+        model->setParameters(parameters);
+    }
 }

@@ -158,6 +158,14 @@ namespace pkp {
       EXPECT_EQ(states[0].size(), sforInitState.size()+1);
     }
 
+    TEST_F(ReactorTest, setParameters)
+    {
+        dvector parameters = {1e7, 55e6, 0.5};
+        reactor->setParameters(parameters);
+        EXPECT_EQ(parameters, reactor->getParameters());
+    }
+
+
     TEST(ReactorTest2, dydt)
     {
         Reactor reactor("SFOR", {1e7, 50e6, 0.5});
@@ -176,6 +184,7 @@ namespace pkp {
         reactor.dydt(y, dydt, t);
         EXPECT_EQ(rate, dydt[0]);
     }
+
 
     TEST(PushBackTest, pointer)
     {

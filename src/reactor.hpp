@@ -76,6 +76,7 @@ namespace pkp {
         void solve(double t, double T=1000, double dt=1e-4, bool verbose=false);
         void solve(std::vector<std::vector<double>> points, double dt=1e-4, bool verbose=false);
         dvector const getParameters(){return model->getParameters();}
+        void setParameters(const dvector & parameters);
         std::vector<double> getTimes(){return times;}
         std::vector<dvector> getStates(){return states;}
         void dump(const std::string &csv, std::string sep = ",");
