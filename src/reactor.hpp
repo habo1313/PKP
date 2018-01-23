@@ -17,6 +17,7 @@
 #include "ReactorFactory.hpp"
 #include <iostream>
 #include <string>
+#include "algorithm"
 
 // include gtest for testing purpose
 #include "gtest/gtest_prod.h"
@@ -58,6 +59,7 @@ namespace pkp {
         void dTdt(const dvector &y, dvector &dydt, double t);
 
         FRIEND_TEST(ReactorTest2, dydt);
+        FRIEND_TEST(ReactorTest, dTdt);
         //std::unique_ptr<Model> model;
     public:
         //enum models {sfor, c2sm};
@@ -74,7 +76,7 @@ namespace pkp {
         //     //throw 0;
         // }
         ~Reactor();
-        void solve(double t, double T=1000, double dt=1e-4, bool verbose=false);
+        void solve(double dt=1e-4, bool verbose=false);
         void solve(std::vector<std::vector<double>> points, double dt=1e-4, bool verbose=false);
         dvector const getParameters(){return model->getParameters();}
         void setParameters(const dvector & parameters);

@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
     // solve
     std::cout << "Solve for t=" << t << " s"<< std::endl;
-    reactor.solve(t, temperature, dt, false);
+    reactor.solve(dt, false);
 
     // get solutions
     //std::vector<double> times = reactor.getTimes();

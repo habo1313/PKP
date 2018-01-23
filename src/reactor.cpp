@@ -26,29 +26,24 @@ namespace pkp{
 
     Reactor::~Reactor(){}
 
-    void Reactor::solve(double t, double T, double dt, bool verbose)
+    void Reactor::solve(double dt, bool verbose)
     {
         //
         //double T = 1000;
-        isoThermal = true; // set isotherm to
+        if (operatingConditions.size() == 0){
+            std::cerr << "Operating conditions not defined" << std::endl;
+            throw std::exception();
+        }
+        double t_end = operatingConditions.back()[0];
+        double t_start = operatingConditions[0][0];
+
         dvector y0 = model->getInitState();
-        y0.push_back(T);
+        y0.push_back(operatingConditions[0][1]);
         dvector dydt(y0.size());
 
         // define integral function from model
         //auto fct = std::bind(&Model::calcRate, model, pl::_1 , pl::_2 , pl::_3);
         auto fct = std::bind(&Reactor::dydt, this, pl::_1 , pl::_2 , pl::_3);
-
-        // double t0 = 0.0;
-
-        //std::vector<double> ts = {t0};
-        //std::vector<dvector> xs = {y0};
-
-        // initialize push structure
-        //push_back_state_and_time solution(xs, ts);
-
-        // integrate
-        //boost::numeric::odeint::integrate(fct, y0 , t0 , t,  dt, solution);
 
         dvector tsaved;
         std::vector<dvector> ysaved;
@@ -56,7 +51,7 @@ namespace pkp{
         // double last=1;
         controlled_stepper_type stepper = make_controlled< error_stepper_type >(1.0e-10 , 1.0e-6 );
         std::for_each(
-            make_adaptive_time_iterator_begin(stepper, fct, y0, 0.0, t, dt),
+            make_adaptive_time_iterator_begin(stepper, fct, y0, t_start, t_end, dt),
             make_adaptive_time_iterator_end(stepper, fct, y0),
             [&tsaved, &ysaved, verbose]( std::pair< const dvector & , const double & > x )
             {
@@ -122,11 +117,34 @@ namespace pkp{
     void Reactor::dTdt(const dvector &y, dvector &dydt, double t)
     {
         //
-        if (isoThermal)
-            dydt[dydt.size()-1] = 0.0;
-        else
+        // if (isoThermal)
+        //     dydt[dydt.size()-1] = 0.0;
+        // else
+        // {
+        //     //
+        // }
+
+        // find position
+        if (t <= operatingConditions[0][0] or t >= operatingConditions.back()[0])
         {
-            //
+            dydt[dydt.size()-1] = 0.0;
+        }
+        else{
+            auto iter = std::find_if(
+                operatingConditions.begin(),
+                operatingConditions.end(),
+                [t](auto it){
+                    return (it[0] > t);
+                });
+            if (iter != operatingConditions.end()){
+                auto s0 = *(iter-1);
+                auto s1 = *(iter);
+                //std::cout << s0[0] << ":" << s1[0] << std::endl;
+                dydt[dydt.size()-1] = (s1[1] - s0[1])/(s1[0]-s0[0]);
+            }
+            else{
+                throw std::exception();
+            }
         }
     }
 
@@ -136,12 +154,22 @@ namespace pkp{
 }
 
 void pkp::Reactor::setOperatingConditions(const std::vector<pkp::dvector>& oc){
-    operatingConditions = oc;
+
     for (auto state: oc){
         if (state.size() != 2){
             throw std::exception();
         }
     }
+    auto it = oc.begin();
+    auto it_end = --oc.end();
+    while (it != it_end){
+        if ((*it)[0] > (*(++it))[0]){
+            throw std::exception();
+        }
+        //it++;
+    }
+
+    operatingConditions = oc;
 }
 
 const std::vector<pkp::dvector> & pkp::Reactor::getOperatingConditions() const{

@@ -149,8 +149,11 @@ namespace pkp {
       //dvector y0 = {0.0, 1000};
       //double t0 = 0;
       double tEnd = 0.05;
+      double T = 1000;
+      std::vector<dvector> oc {{0, T}, {tEnd, T}};
+      reactor->setOperatingConditions(oc);
       double dt = 1e-6;
-      reactor->solve(tEnd, dt);
+      reactor->solve(dt, false);
       reactor->dump("test.csv");
       std::vector<double> times = reactor->getTimes();
       std::vector<dvector> states = reactor->getStates();
@@ -167,6 +170,8 @@ namespace pkp {
 
     TEST_F(ReactorTest, operatingConditions)
     {
+        auto oc0 = reactor->getOperatingConditions();
+        EXPECT_EQ(oc0.size(), 0);
         std::vector<dvector> oc = {{0, 300}, {0.1, 1000}, {0.2, 1000}};
         reactor->setOperatingConditions(oc);
         EXPECT_EQ(reactor->getOperatingConditions(), oc);
@@ -175,11 +180,26 @@ namespace pkp {
         EXPECT_NE(reactor->getOperatingConditions(), oc1);
     }
 
+    TEST_F(ReactorTest, dTdt)
+    {
+        std::vector<dvector> oc = {{0, 300}, {0.1, 1000}, {0.2, 1000}};
+        reactor->setOperatingConditions(oc);
+        dvector y = {0, 450.};
+        dvector dydt(2);
+        double t0 = 0.05;
+        reactor->dTdt(y, dydt, t0);
+        size_t index = 0;
+        double dTdt = (oc[index+1][1] - oc[index][1])/(oc[index+1][0]-oc[index][0]);
+        EXPECT_EQ(dTdt, dydt.back());
+    }
+
 
     TEST(ReactorTest2, dydt)
     {
         Reactor reactor("SFOR", {1e7, 50e6, 0.5});
         dvector parameters = reactor.getParameters();
+        std::vector<dvector> oc {{0, 1000}, {0.1, 1000}};
+        reactor.setOperatingConditions(oc);
         double T = 1000;
         dvector y = {0.0, T};
         dvector dydt(y.size());
