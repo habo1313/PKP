@@ -18,13 +18,37 @@ cdef extern from "reactor.hpp" namespace "pkp":
 
 
 cdef class Reactor:
+    """
+    Devolatilization reactor with prescribed particle temperature.
+    """
     cdef CxxReactor* _c_reactor
     def __cinit__(self, name, parameters):
+        """
+        Parameters
+        ----------
+        name: str
+            Name of the model
+        parameters: list
+            List of parameters
+        """
         cdef string c_name = name.encode()
         cdef vector[double] c_parameters = parameters
         self._c_reactor = new CxxReactor(c_name, c_parameters)
 
+    def __dealloc__(self):
+        del self._c_reactor
+
     def solve(self, dt, verbose=True):
+        """
+        Solve reactor.
+
+        Parameters
+        ----------
+        dt: float
+            Initial time step
+        verbose: bool
+            Print messages
+        """
         cdef double dt_c = dt
         cdef bool verbose_c = verbose
         self._c_reactor.solve(dt_c, verbose_c)
@@ -51,6 +75,16 @@ cdef class Reactor:
     states = property(_get_states)
 
     def dump(self, csv, sep=','):
+        """
+        Dump solution in a csv file.
+
+        Parameters
+        ----------
+        csv: str
+            Name of the csv file
+        sep: str
+            Data field separator
+        """
         cdef string csv_c = csv.encode()
         cdef sep_c = sep.encode()
         self._c_reactor.dump(csv_c, sep_c)
