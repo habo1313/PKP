@@ -165,6 +165,16 @@ namespace pkp {
         EXPECT_EQ(parameters, reactor->getParameters());
     }
 
+    TEST_F(ReactorTest, operatingConditions)
+    {
+        std::vector<dvector> oc = {{0, 300}, {0.1, 1000}, {0.2, 1000}};
+        reactor->setOperatingConditions(oc);
+        EXPECT_EQ(reactor->getOperatingConditions(), oc);
+        auto oc1 = reactor->getOperatingConditions();
+        oc1.pop_back();
+        EXPECT_NE(reactor->getOperatingConditions(), oc1);
+    }
+
 
     TEST(ReactorTest2, dydt)
     {

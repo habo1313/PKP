@@ -49,6 +49,7 @@ namespace pkp {
         std::shared_ptr<Model> model;
         std::vector<double> times;
         std::vector<dvector> states;
+        std::vector<dvector> operatingConditions;
         bool isoThermal;
         //
         //    calculate the derivatives
@@ -80,7 +81,9 @@ namespace pkp {
         std::vector<double> getTimes(){return times;}
         std::vector<dvector> getStates(){return states;}
         void dump(const std::string &csv, std::string sep = ",");
-        void printParameters(){model->printParameters();}
+        inline void printParameters(){model->printParameters();}
+        void setOperatingConditions(const std::vector<dvector>&);
+        const std::vector<dvector> & getOperatingConditions() const;
     };
 }//namespace pkp
 

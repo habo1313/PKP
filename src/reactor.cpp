@@ -134,3 +134,16 @@ namespace pkp{
         model->setParameters(parameters);
     }
 }
+
+void pkp::Reactor::setOperatingConditions(const std::vector<pkp::dvector>& oc){
+    operatingConditions = oc;
+    for (auto state: oc){
+        if (state.size() != 2){
+            throw std::exception();
+        }
+    }
+}
+
+const std::vector<pkp::dvector> & pkp::Reactor::getOperatingConditions() const{
+    return operatingConditions;
+}
