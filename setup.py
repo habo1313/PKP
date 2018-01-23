@@ -2,9 +2,9 @@ from distutils.core import setup
 from Cython.Build import cythonize
 from distutils.extension import Extension
 
-sourcefiles = ['pkp.pyx']
+sourcefiles = ['cython/pkpc.pyx']
 compile_opts = ['-std=c++11']
-ext = [Extension('*',
+ext = [Extension('pkpc',
                  sourcefiles,
                  extra_compile_args=compile_opts,
                  extra_link_args=['-lpkp'],
@@ -16,5 +16,10 @@ ext = [Extension('*',
        ]
 
 setup(
-  ext_modules=cythonize(ext)
+    name="pkpc",
+    ext_modules=cythonize(ext),
+    description="FLUT Python class",
+    author='Michele Vascellari',
+    author_email='michele.vascellari@gmail.com',
+    version="0.0.1"
 )

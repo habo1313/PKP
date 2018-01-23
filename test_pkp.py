@@ -1,9 +1,13 @@
-import pkp
+import pkpc
 import numpy as np
 import matplotlib.pyplot as plt
 from dualplot import DualPlot
 
-reactor = pkp.Reactor('SFOR', [1e6, 50e6, 0.5])
+reactor = pkpc.Reactor('C2SM')
+
+print('C2SM', reactor.parameters)
+
+reactor = pkpc.Reactor('SFOR', [1e6, 50e6, 0.5])
 
 print(reactor.parameters)
 
