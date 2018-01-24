@@ -5,6 +5,8 @@
 #include "SFOR.hpp"
 #include <cmath>
 namespace pkp{
+    SFOR::SFOR(const dvector &par):
+        Model(par, sforParDefault, "SFOR", sforParNames, sforInitState){}
     void SFOR::calcRate(const std::vector<double> &y, std::vector<double> &dydt, double t, double T)
     {
         double vol = y[0];

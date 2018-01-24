@@ -8,6 +8,8 @@
 //using namespace std;
 
 namespace pkp{
+    C2SM::C2SM(const std::vector<double> &par):
+        Model(par, c2smParDefault, "C2SM", c2smParNames, c2smInitState){};
 
     void C2SM::calcRate(const std::vector<double> &y, std::vector<double> &dydt, double t, double T)
     {
