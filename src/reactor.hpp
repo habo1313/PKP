@@ -66,11 +66,12 @@ namespace pkp {
         ~Reactor();
         void solve(double dt=1e-4, bool verbose=false);
         void solve(std::vector<std::vector<double>> points, double dt=1e-4, bool verbose=false);
-        dvector const getParameters(){return model->getParameters();}
+        const dvector & getParameters() const {return model->getParameters();}
+        size_t getNParameters() const {return model->getNParameters();}
         void setParameters(const dvector & parameters);
-        std::vector<double> getTimes(){return times;}
-        std::vector<dvector> getStates(){return states;}
-        void dump(const std::string &csv, std::string sep = ",");
+        const std::vector<double> & getTimes() const {return times;}
+        const std::vector<dvector> & getStates() const {return states;}
+        void dump(const std::string &csv, std::string sep = ",") const;
         inline void printParameters(){model->printParameters();}
         void setOperatingConditions(const std::vector<dvector>&);
         const std::vector<dvector> & getOperatingConditions() const;

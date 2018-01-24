@@ -43,7 +43,7 @@ cdef class Reactor:
     def __dealloc__(self):
         del self._c_reactor
 
-    def solve(self, dt, verbose=True):
+    def solve(self, dt=1e-5, verbose=True):
         """
         Solve reactor.
 

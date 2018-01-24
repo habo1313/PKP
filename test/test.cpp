@@ -85,7 +85,8 @@ namespace pkp {
     TEST_F(SFORTest, getNParameters)
     {
       EXPECT_EQ(3, model->getNParameters());
-      EXPECT_EQ(sforParNames, model->getParametersNames());
+      std::vector<std::string> par = {"A", "E", "y0"};
+      EXPECT_EQ(par, model->getParametersNames());
     }
 
     TEST_F(SFORTest, setParameters)
@@ -163,7 +164,7 @@ namespace pkp {
       std::vector<double> times = reactor->getTimes();
       std::vector<dvector> states = reactor->getStates();
       EXPECT_EQ(times.size(), states.size());
-      EXPECT_EQ(states[0].size(), sforInitState.size()+1);
+      EXPECT_EQ(states[0].size(), 2);
     }
 
     TEST_F(ReactorTest, setParameters)

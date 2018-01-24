@@ -85,7 +85,7 @@ namespace pkp{
     }
 
 
-    void Reactor::dump(const std::string &csv, std::string sep)
+    void Reactor::dump(const std::string &csv, std::string sep) const
     {
         // std::ofstream file(csv);
         // for (int i=0; i < times.size(); ++i)
