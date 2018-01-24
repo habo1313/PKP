@@ -110,6 +110,11 @@ namespace pkp {
       EXPECT_EQ(dydt[0], rate_sfor(parameters, T, v));
     }
 
+    TEST_F(SFORTest, getName)
+    {
+        EXPECT_EQ(model->getName(), "SFOR");
+    }
+
     TEST_F(C2SMTest, rate)
     {
       double T = 1000;

@@ -11,6 +11,18 @@
 #include <stdio.h>
 
 namespace pkp{
+    Model::Model(const dvector &par, const dvector &parDef, const std::string &model,
+        const parVector parNames, const dvector istate):
+            parameters(par),
+            parametersDefault(parDef),
+            name(model),
+            parametersNames(parNames),
+            initState(istate)
+    {
+        if (par.size() != parDef.size())
+        throw 0;
+    }
+
     void const Model::printParameters()
     {
         std::cout << "Model:" << name  << '\n';
